@@ -1,0 +1,27 @@
+[ui]
+username = Aron Carroll <self@aroncarroll.com>
+editor = open -eWn
+
+[extensions]
+hgext.extdiff =
+color =
+
+[color]
+status.modified = green bold
+status.added = yellow bold
+status.removed = red bold
+status.deleted = blue bold
+status.unknown = cyan bold
+status.ignored = black bold
+
+[extdiff]
+cmd.ksdiff = /usr/local/bin/ksdiff-wrapper
+opts.ksdiff = hg
+
+[defaults]
+addremove = --similarity 100
+
+[alias]
+dt = ksdiff
+slog = log --template '{rev}:{node|short} {desc|firstline}\n'
+show = log --color=always -pr
