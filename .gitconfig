@@ -1,0 +1,96 @@
+[user]
+  name=Aron Carroll
+  email=self@aroncarroll.com
+
+[branch]
+  autosetupmerge=true
+
+[branch "master"]
+  remote=origin
+  merge=refs/heads/master
+
+[push]
+  default=tracking
+
+[alias]
+  co=checkout
+  cb=checkout -b
+  cl=checkout @{-1}
+  cc=checkout-clean
+  br=branch
+  ci=commit
+  st=status
+  sb=status -sb
+  unstage=reset HEAD --
+  last=log -1 HEAD
+  diff=diff --color
+  di=diff --color
+  dw=diff --word-diff --color
+  dt=difftool
+  re=rebase
+  logb=log -10 --pretty=oneline --decorate
+  log=log -10 --pretty=oneline
+  lg=log -10 --oneline
+  cii=commit --interactive,
+  ln=symbolic-ref
+  ls=ls-files
+  pop=stash pop
+  pull=pull --no-commit --no-ff
+  pullff=pull --no-commit
+  tag=tag -n1
+  patch=diff --no-prefix
+  ml=merge @{-1} --no-ff
+  mlff=merge @{-1}
+  tags=tag -n1
+
+[core]
+  # editor=open -eWn                                        # TextEdit
+  # editor=mate --name 'Git Commit Message' -w -l1          # TextMate 2
+  # editor=mate -w -l1                                      # TextMate 1
+  editor=mvim -f +1 -c '"start! | au VimLeave * maca hide: | A"' # MacVim
+  autocrlf=input
+  excludesfile=~/.gitignore
+
+[merge]
+  tool=opendiff
+
+[difftool "Kaleidoscope"]
+  cmd="ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\""
+
+[difftool]
+  prompt=false
+
+[diff]
+  tool=Kaleidoscope
+
+[color]
+  branch=auto
+  diff=auto
+  status=auto
+
+[color "branch"]
+  current=yellow reverse
+  local=yellow
+  remote=green
+
+[color "diff"]
+  meta=yellow bold
+  frag=magenta bold
+  old=red bold
+  new=green bold
+
+[color "status"]
+  added=yellow
+  changed=green
+  untracked=cyan
+
+[help]
+  autocorrect=-1
+
+[gist] # https://github.com/defunkt/gist
+  private=yes
+  browse=yes
+
+[github]
+  user=aron
+  password=!security 2>&1 >/dev/null find-generic-password -gs github.password | ruby -e 'print $1 if STDIN.gets =~ /^password: \\\"(.*)\\\"$/'
