@@ -1,0 +1,64 @@
+snippet doc "A JavaScript TomDoc variant"
+/* ${1:Public: }${3:title}
+${4: *
+ * ${5:param} - ${6:comment}
+} *
+${7: * Examples
+ *
+ *   ${8:example}
+ *
+} * Returns ${9}.
+ */$0
+endsnippet
+
+snippet puts "console.log()"
+console.log(${1:'${2:log}'});$0
+endsnippet
+
+snippet sui "suite()"
+suite('$1', function () {
+	$0
+});
+endsnippet
+
+snippet desc "describe()"
+describe('$1', function () {
+	$0
+});
+endsnippet
+
+snippet it "it()"
+it('${1:should $2}'${3:, function () {
+	$4
+}});$0
+endsnippet
+
+snippet test "test()"
+test('${1:should $2}'${3:, function () {
+	$4
+}});$0
+endsnippet
+
+snippet bef "beforeEach()"
+beforeEach(function () {
+	$0
+});
+endsnippet
+
+snippet set "setup()"
+setup(function () {
+	$0
+});
+endsnippet
+
+snippet aft "afterEach()"
+afterEach(function () {
+	$0
+});
+endsnippet
+
+snippet tear "teardown()"
+teardown(function () {
+	$0
+});
+endsnippet

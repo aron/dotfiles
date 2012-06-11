@@ -1,0 +1,23 @@
+snippet extends "{% extends %}" b
+{% extends '$1' %}
+endsnippet
+
+snippet block "{% block %}" b
+{% block $1 %}$0{% endblock %}
+endsnippet
+
+snippet # "{# x #}"
+{# $0 #}
+endsnippet
+
+snippet snippet "{% snippet %}"
+{% snippet '$1' %}$0
+endsnippet
+
+snippet {% "{% x %}" i
+{% ${1} ${2}%}$0{% end$1 %}
+endsnippet
+
+snippet {{ "{{ }}" i
+{{ ${1:_('$2')} }}$0
+endsnippet
