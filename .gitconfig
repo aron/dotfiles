@@ -52,7 +52,11 @@
   excludesfile=~/.gitignore
 
 [merge]
-  tool=opendiff
+  tool=mvim
+
+[mergetool "mvim"]
+  cmd=mvim -d -g $LOCAL $MERGED $REMOTE
+  keepbackup=false
 
 [difftool "Kaleidoscope"]
   cmd="ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\""
