@@ -42,12 +42,19 @@ zstyle ':vcs_info:*'  enable git hg svn
 zstyle ':vcs_info:*'  check-for-changes true
 zstyle ':vcs_info:*'  stagedstr     "+"
 zstyle ':vcs_info:*'  unstagedstr   "*"
-zstyle ':vcs_info:*'  actionformats "action"
-zstyle ':vcs_info:*'  formats       "(%b%c%u%m)"
+zstyle ':vcs_info:*'  actionformats "%b|%a"
+zstyle ':vcs_info:*'  formats       "(%b%c%u%m) "
 zstyle ':vcs_info:*'  nvcsformats   ""
-zstyle ':vcs_info:git*+set-message:*' hooks git-stash
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-stash git-branch
 
-# Show count of stashed changes
+# Add a space between branch and state flag.
+function +vi-git-branch() {
+  if [[ "${hook_com[staged]}" != "" || "${hook_com[unstaged]}" != "" && "${hook_com[misc]}" != "" || "${hook_com[action]}" != "" ]] ; then
+    hook_com[branch]+=" "
+  fi
+}
+
+# Show indication of stashed changes
 function +vi-git-stash() {
   local -a stashes
   if [[ -s ${hook_com[base]}/.git/refs/stash ]] ; then
@@ -56,11 +63,23 @@ function +vi-git-stash() {
   fi
 }
 
+# Show indicator for a dirty directory.
++vi-git-untracked(){
+  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+    git status --porcelain | grep '??' &> /dev/null ; then
+    # This will show the marker if there are any untracked files in repo.
+    # If instead you want to show the marker only if there are untracked
+    # files in $PWD, use:
+    #[[ -n $(git ls-files --others --exclude-standard) ]] ; then
+    hook_com[staged]+='%%'
+  fi
+}
+
 precmd() {
   vcs_info
 }
 
-PROMPT='%~${vcs_info_msg_0_} %% '
+PROMPT='%~ ${vcs_info_msg_0_}%% '
 RPROMPT=""
 
 # Compile the completion dump, to increase startup speed.
