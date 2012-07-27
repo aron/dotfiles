@@ -47,7 +47,7 @@
   # editor=open -eWn                                        # TextEdit
   # editor=mate --name 'Git Commit Message' -w -l1          # TextMate 2
   # editor=mate -w -l1                                      # TextMate 1
-  editor=mvim -f +1 -c '"start! | au VimLeave * maca hide: | A"' # MacVim
+  editor=vim -f +1 -c '"start! | au VimLeave * maca hide: | A"' # MacVim
   autocrlf=input
   excludesfile=~/.gitignore
 
