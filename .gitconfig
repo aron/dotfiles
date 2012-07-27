@@ -39,9 +39,9 @@
   pullff=pull --no-commit
   tag=tag -n1
   patch=diff --no-prefix
-  ml=merge @{-1} --no-ff
-  mlff=merge @{-1}
-  tags=tag -n1
+  ml=merge @{-1} --ff-only
+  mlnf=merge @{-1} --no-ff
+  tagg=tag -n1
 
 [core]
   # editor=open -eWn                                        # TextEdit
