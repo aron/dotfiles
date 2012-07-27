@@ -30,7 +30,7 @@
   re=rebase
   logb=log -10 --pretty=oneline --decorate
   log=log -10 --pretty=oneline
-  lg=log -10 --oneline
+  lg=log --pretty=format:'%C(yellow)%h%Creset %s %C(bold black)(%cr)%Creset' -10 --abbrev-commit --
   cii=commit --interactive,
   ln=symbolic-ref
   ls=ls-files
