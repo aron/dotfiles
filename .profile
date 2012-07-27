@@ -1,6 +1,6 @@
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
-export PATH=/usr/local/bin:/usr/local/share/npm/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -15,7 +15,7 @@ export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
 export EDITOR=mvim
 
-export ACK_OPTIONS="--type-add=less=.less"
+export ACK_OPTIONS="--type-set=less=.less --type-set=coffee=.coffee"
 
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm  # This loads RVM into a shell session.
 
