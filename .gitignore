@@ -1,4 +1,5 @@
 *.pyc
+*.un~
 *.tmproj
 .DS_Store
 .vimrc
