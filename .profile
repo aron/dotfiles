@@ -1,6 +1,7 @@
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
+export PATH=/usr/local/n/current/bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -37,7 +38,10 @@ alias serve="python -m SimpleHTTPServer"
 alias tunnel="ssh -D 8080 -f -C -q -N"
 
 alias gi="git"
+alias gt="git"
 alias gti="git"
+alias gut="git"
+alias got="git"
 
 # http://www.doughellmann.com/docs/virtualenvwrapper/tips.html#tying-to-pip-s-virtualenv-support
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS="--no-site-packages"
