@@ -2,6 +2,8 @@ export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
 export PATH=/usr/local/n/current/bin:$PATH
+export PATH=$HOME/.rbenv/bin:$PATH
+export PATH=$NAVE_PATH:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -48,7 +50,11 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS="--no-site-packages"
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
 
-source /usr/local/share/python/virtualenvwrapper.sh
+VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
+[ -e $VIRTUALENV_WRAPPER ] && source $VIRTUALENV_WRAPPER
+
+# https://github.com/sstephenson/rbenv
+[ -e "$(which less)" ] && eval "$(rbenv init -)"
 
 pman () {
   man -t $1 | open -a /Applications/Preview.app -f
@@ -60,11 +66,12 @@ __hg_ps1() {
 
 if [[ $SHELL == "/bin/bash" ]]; then
   export PS1='\W/$(__git_ps1 "(%s)")$(__hg_ps1) % '
-
-  source $HOME/.svn-completion
+  source $HOME/.svn-completion 
   source $HOME/.django-completion
   source /usr/local/etc/bash_completion.d/git-completion.bash
   source /usr/local/etc/bash_completion.d/git-flow-completion.bash
 fi
-source /usr/local/etc/bash_completion.d/npm-completion.bash
+NPM_COMPLETION=/usr/local/etc/bash_completion.d/npm-completion.bash
+[ -e NPM_COMPLETION ] && source NPM_COMPLETION
+
 source $HOME/.private
