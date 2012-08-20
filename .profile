@@ -1,8 +1,8 @@
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
-export PATH=/usr/local/bin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
 export PATH=/usr/local/n/current/bin:$PATH
-export PATH=$HOME/.rbenv/bin:$PATH
+export PATH=$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH
 export PATH=$NAVE_PATH:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
