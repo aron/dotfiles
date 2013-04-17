@@ -61,7 +61,7 @@
   keepbackup=false
 
 [difftool "Kaleidoscope"]
-  cmd="ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\""
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 
 [difftool]
   prompt=false
@@ -100,3 +100,6 @@
 [github]
   user=aron
   password=!security 2>&1 >/dev/null find-generic-password -gs github.password | ruby -e 'print $1 if STDIN.gets =~ /^password: \\\"(.*)\\\"$/'
+[mergetool "Kaleidoscope"]
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustExitCode = true
