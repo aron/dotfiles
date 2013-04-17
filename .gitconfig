@@ -90,6 +90,9 @@
   changed=green
   untracked=cyan
 
+[mailmap]
+  file=~/.mailmap
+
 [help]
   autocorrect=-1
 
