@@ -13,24 +13,26 @@
   default=tracking
 
 [alias]
+  amend=commit --amend --reuse-message
   co=checkout
   cb=checkout -b
   cl=checkout @{-1}
   cc=checkout-clean
   br=branch
   ci=commit
-  st=status
-  sb=status -sb
+  st=status -sb
+  sf=status
   unstage=reset HEAD --
   last=log -1 HEAD
   diff=diff --color
   di=diff --color
   dw=diff --word-diff --color
   dt=difftool
+  dl=branch -D @{-1}
   re=rebase
   logb=log -10 --pretty=oneline --decorate
   log=log -10 --pretty=oneline
-  lg=log --pretty=format:'%C(yellow)%h%Creset %s %C(bold black)(%cr)%Creset' -10 --abbrev-commit --
+  lg=log --pretty=format:'%C(yellow)%h%Creset %s %C(bold black)(%cr by %C(magenta bold)%aN%C(bold black))%Creset' -10 --abbrev-commit --
   cii=commit --interactive,
   ln=symbolic-ref
   ls=ls-files
