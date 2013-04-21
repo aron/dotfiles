@@ -14,3 +14,48 @@ snippet puts "console.log"
 console.log(${1:"${2:log}"})$0
 endsnippet
 
+snippet sui "suite()"
+suite '$1', ->
+	$0
+endsnippet
+
+snippet desc "describe()"
+describe '$1', ->
+	$0
+endsnippet
+
+snippet it "it()"
+it '${1:should $2}'${3:, ->
+	$4
+}$0
+endsnippet
+
+snippet test "test()"
+test '${1:should $2}'${3:, ->
+	$4
+$0
+endsnippet
+
+snippet bef "beforeEach()"
+beforeEach ->
+	$0
+endsnippet
+
+snippet set "setup()"
+setup ->
+	$0
+endsnippet
+
+snippet aft "afterEach()"
+afterEach ->
+	$0
+endsnippet
+
+snippet tear "teardown()"
+teardown ->
+	$0
+endsnippet
+
+snippet ex "expect()"
+expect(${1:subject()})
+endsnippet
