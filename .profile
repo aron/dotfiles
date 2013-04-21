@@ -1,9 +1,11 @@
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$HOME/.bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 export PATH=/usr/local/n/current/bin:$PATH
 export PATH=$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH
 export PATH=$NAVE_PATH:$PATH
+export PATH=$HOME/.bin:$PATH
+export PATH=.bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -17,8 +19,6 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
 export EDITOR=mvim
-
-export ACK_OPTIONS="--type-set=less=.less --type-set=coffee=.coffee"
 
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm  # This loads RVM into a shell session.
 
@@ -38,7 +38,6 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles FALSE; killa
 
 alias serve="python -m SimpleHTTPServer"
 alias tunnel="ssh -D 8080 -f -C -q -N"
-
 alias gi="git"
 alias gt="git"
 alias gti="git"
@@ -54,7 +53,9 @@ VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
 [ -e $VIRTUALENV_WRAPPER ] && source $VIRTUALENV_WRAPPER
 
 # https://github.com/sstephenson/rbenv
-[ -e "$(which less)" ] && eval "$(rbenv init -)"
+rbenvinit () {
+  [ -e "$(which less)" ] && eval "$(rbenv init - zsh)"
+}
 
 pman () {
   man -t $1 | open -a /Applications/Preview.app -f
@@ -66,7 +67,7 @@ __hg_ps1() {
 
 if [[ $SHELL == "/bin/bash" ]]; then
   export PS1='\W/$(__git_ps1 "(%s)")$(__hg_ps1) % '
-  source $HOME/.svn-completion 
+  source $HOME/.svn-completion
   source $HOME/.django-completion
   source /usr/local/etc/bash_completion.d/git-completion.bash
   source /usr/local/etc/bash_completion.d/git-flow-completion.bash
@@ -75,3 +76,4 @@ NPM_COMPLETION=/usr/local/etc/bash_completion.d/npm-completion.bash
 [ -e NPM_COMPLETION ] && source NPM_COMPLETION
 
 source $HOME/.private
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages:
