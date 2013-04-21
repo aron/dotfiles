@@ -6,4 +6,5 @@
 .jshintrc
 .dropbox
 .tm_properties
+.ctags
 tags
