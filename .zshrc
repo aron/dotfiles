@@ -1,11 +1,14 @@
 source ~/.profile
 
+fpath=(/usr/local/share/zsh/site-functions $fpath)
+
 autoload colors && colors
 autoload -Uz vcs_info
 autoload -Uz compinit && compinit -i
 #autoload -U complist
 
 set -o emacs
+unsetopt nomatch
 
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
@@ -27,13 +30,15 @@ setopt HIST_REDUCE_BLANKS
 
 # Prevent zsh conflicting with git commands
 alias git="noglob git"
+alias wget="noglob wget"
+alias curl="noglob curl"
 
 # Source files (the order matters).
 source "$HOME/.zsh/terminal.zsh"
 source "$HOME/.zsh/completion.zsh"
 source "$HOME/.zsh/history.zsh"
 source "$HOME/.zsh/directory.zsh"
-source /usr/local/etc/bash_completion.d/git-completion.bash
+source "$HOME/.zsh/history-substring-search.zsh"
 
 # Load RVM
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
