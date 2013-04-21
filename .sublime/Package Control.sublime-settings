@@ -1,0 +1,21 @@
+{
+	"installed_packages":
+	[
+		"CoffeeScript",
+		"Comments Aware Enter",
+		"DetectSyntax",
+		"Git",
+		"Open URL",
+		"Package Control",
+		"RubyTest",
+		"Sass",
+		"SideBarEnhancements",
+		"sublime-better-coffeescript",
+		"sublime-github",
+		"SublimeCodeIntel",
+		"Surround",
+		"Theme - Aqua",
+		"Theme - Soda",
+		"TomDoc+"
+	]
+}
