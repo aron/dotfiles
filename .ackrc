@@ -1,0 +1,10 @@
+--smart-case 
+--type-add=css=.scss,.less
+--type-add=html=.erb
+--type-set=scss=.scss
+--type-set=less=.less
+--type-set=coffee=.coffee
+--ignore-dir=tmp
+--ignore-dir=logs
+--ignore-dir=.gems
+--ignore-dir=.sass-cache
