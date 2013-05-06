@@ -11,6 +11,7 @@
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
 	"fold_buttons": false,
+	"font_size": 14.0,
 	"gutter": true,
 	"ignored_packages":
 	[
