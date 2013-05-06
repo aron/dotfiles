@@ -40,8 +40,8 @@ source "$HOME/.zsh/history.zsh"
 source "$HOME/.zsh/directory.zsh"
 source "$HOME/.zsh/history-substring-search.zsh"
 
-# Load RVM
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+# Source rbenv completion.
+source /usr/local/Cellar/rbenv/0.4.0/completions/rbenv.zsh
 
 zstyle ':vcs_info:*'  enable git hg svn
 zstyle ':vcs_info:*'  check-for-changes true
