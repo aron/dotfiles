@@ -1,8 +1,11 @@
+export RBENV_ROOT=/usr/local/var/rbenv
+export NAVE_DIR=/usr/local/var/nave
+export WORKON_HOME=/usr/local/var/virtualenv
+
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
-export PATH=/usr/local/n/current/bin:$PATH
-export PATH=$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH
+export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
 export PATH=$NAVE_PATH:$PATH
 export PATH=$HOME/.bin:$PATH
 export PATH=.bin:$PATH
@@ -10,15 +13,13 @@ export PATH=.bin:$PATH
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
 
-export WORKON_HOME=$HOME/.virtualenvs
-
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
-export EDITOR=mvim
+export EDITOR=subl
 
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm  # This loads RVM into a shell session.
 
