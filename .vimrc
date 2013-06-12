@@ -106,11 +106,20 @@ set incsearch
 set hlsearch
 nnoremap <leader><leader> :nohlsearch<cr>
 
+" Navigation
+set scrolloff=3
+
+" Commands
+
+" Expand %% to the current directory
+cabbr <expr> %% expand('%:p:h')
+cabbr <expr> %f expand('%:t')
+
 " Tab completion
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn
+set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,.gems,.bin
 set wildignore+=*.png,*.jpg,*.gif,*.woff,*.ttf,*.eot
-set wildignore+=test/fixtures/*,vendor/gems/*,node_modules/*
+set wildignore+=test/fixtures/*,vendor/gems/*,node_modules,log,tmp
 
 " http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/
 set exrc   " enable per-directory .vimrc files
@@ -139,6 +148,33 @@ function! <SID>StripTrailingWhitespaces()
   call cursor(l, c)
 endfunction
 
+let g:netrw_altv = 1
+let g:netrw_winsize = 30
+let g:netrw_browse_split = 2
+let g:netrw_preview = 1
+let g:netrw_list_hide = ''
+let g:netrw_liststyle = 0
+
+function! ToggleVExplorer()
+  if exists("t:expl_buf_num")
+    let expl_win_num = bufwinnr(t:expl_buf_num)
+    if expl_win_num != -1
+      let cur_win_nr = winnr()
+      exec expl_win_num . 'wincmd w'
+      close
+      exec cur_win_nr . 'wincmd w'
+      unlet t:expl_buf_num
+    else
+      unlet t:expl_buf_num
+    endif
+  else
+    exec '1wincmd w'
+    Vexplore
+    let t:expl_buf_num = bufnr("%")
+  endif
+endfunction
+nmap <leader>e :call ToggleVExplorer()<cr>
+
 nmap <leader>a  :Ack
 nmap <leader>as :AckFromSearch<cr>
 nmap <leader>rc :Rcontroller
@@ -165,15 +201,17 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 let g:gist_private = 1
 
-let g:syntastic_javascript_checker="jshint"
-let g:syntastic_quiet_warnings=1
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [], 'passive_filetypes': ['html', 'scss'] }
+let g:syntastic_javascript_checkers=["jshint"]
+let g:syntastic_javascript_jshint_conf='~/.jshintrc'
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_quiet_warnings = 0
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss'] }
 
 augroup plugins
   autocmd!
   autocmd InsertEnter * :setlocal nohlsearch
   autocmd InsertLeave * :setlocal hlsearch
-  autocmd FileType css,scss,less,html,xml setlocal iskeyword+=-
+  autocmd FileType css,scss,less,html,xml,erb setlocal iskeyword+=-
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler
 augroup END
