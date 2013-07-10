@@ -51,6 +51,12 @@ cnoreabbrev Q  q
 cnoreabbrev W  w
 cnoreabbrev Wq wq
 
+" Remap keys for tmux
+map <Esc>[A <Up>
+map <Esc>[B <Down>
+map <Esc>[C <Right>
+map <Esc>[D <Left>
+
 " set spell
 
 " Mouse
