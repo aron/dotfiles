@@ -78,6 +78,7 @@ try | set formatoptions+=j | catch | endtry
 set noswapfile
 set undodir=~/.vim/undo
 set undofile
+set hidden
 
 " Remap Leader
 nnoremap " " <Nop>
@@ -183,7 +184,6 @@ function! ToggleVExplorer()
     let t:expl_buf_num = bufnr("%")
   endif
 endfunction
-nmap <leader>e :call ToggleVExplorer()<cr>
 
 nmap <leader>a  :Ack
 nmap <leader>as :AckFromSearch<cr>
@@ -202,6 +202,7 @@ if exists("g:rspec_command")
   nmap <leader>sr :call RunLastSpec()<cr>
 endif
 
+let g:CommandTMaxHeight=15
 let g:CommandTCancelMap=['<Esc>', '<C-c>']
 let g:CommandTMatchWindowReverse=1
 
