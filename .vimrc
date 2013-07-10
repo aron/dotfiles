@@ -4,10 +4,14 @@ call pathogen#infect()
 set t_Co=256
 
 syntax on
+colorscheme hemisu
+
+set background=dark
+hi Normal ctermbg=NONE
+hi ColorColumn ctermbg=238
 
 augroup color_scheme
   au!
-  au VimEnter * colorscheme default | set background=dark | source ~/.vim/after/colors/default.vim
 
   " now set it up to change the status line based on mode
   au InsertEnter * hi StatusLine cterm=bold ctermbg=None ctermfg=white
