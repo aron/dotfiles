@@ -10,7 +10,7 @@
   merge=refs/heads/master
 
 [push]
-  default=tracking
+  default=simple
 
 [alias]
   amend=commit --amend --reuse-message
