@@ -36,7 +36,7 @@
 	url = https://github.com/kchmck/vim-coffee-script
 [submodule ".vim/bundle/vim-tomdoc"]
 	path = .vim/bundle/vim-tomdoc
-	url = git@github.com:jc00ke/vim-tomdoc.git
+	url = git@github.com:duwanis/tomdoc.vim.git
 [submodule ".vim/bundle/vim-syntastic"]
 	path = .vim/bundle/vim-syntastic
 	url = git@github.com:scrooloose/syntastic.git
@@ -67,3 +67,21 @@
 [submodule ".vim/bundle/vim-git"]
 	path = .vim/bundle/vim-git
 	url = git@github.com:tpope/vim-git.git
+[submodule ".vim/bundle/vim-unimpaired"]
+	path = .vim/bundle/vim-unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
+[submodule ".vim/bundle/vim-markdown"]
+	path = .vim/bundle/vim-markdown
+	url = git@github.com:tpope/vim-markdown.git
+[submodule ".vim/bundle/vim-ragtag"]
+	path = .vim/bundle/vim-ragtag
+	url = git@github.com:tpope/vim-ragtag.git
+[submodule ".vim/bundle/vim-tcomment"]
+	path = .vim/bundle/vim-tcomment
+	url = git@github.com:tomtom/tcomment_vim.git
+[submodule ".vim/bundle/vim-ruby"]
+	path = .vim/bundle/vim-ruby
+	url = git@github.com:vim-ruby/vim-ruby.git
+[submodule ".vim/bundle/vim-javascript"]
+	path = .vim/bundle/vim-javascript
+	url = git@github.com:pangloss/vim-javascript.git
