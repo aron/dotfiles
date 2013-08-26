@@ -8,7 +8,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
 export PATH=$NAVE_PATH:$PATH
 export PATH=$HOME/.bin:$PATH
-export PATH=.bin:$PATH
+export PATH=bin:.bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -19,10 +19,11 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
-export EDITOR=subl
+export EDITOR=vim
 
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm  # This loads RVM into a shell session.
 
+alias e=$EDITOR
 alias ..="cd .."
 
 alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
