@@ -57,22 +57,26 @@ map <Esc>[B <Down>
 map <Esc>[C <Right>
 map <Esc>[D <Left>
 
-" set spell
-
 " Mouse
-set mouse=""
+set mouse=a
+if exists('$TMUX')  " Support resizing in tmux
+  set ttymouse=xterm2
+endif
 
 " No vi compatibility
 set nocompatible
 set nostartofline
 set visualbell
 set timeoutlen=500
+set autoread
 
 " Columns
 set textwidth=79
 set colorcolumn=+1
 set formatoptions=cq
 try | set formatoptions+=j | catch | endtry
+set scrolloff=3
+set showcmd
 
 " Disable swap files
 set noswapfile
@@ -127,10 +131,10 @@ cabbr <expr> %% expand('%:p:h')
 cabbr <expr> %f expand('%:t')
 
 " Tab completion
-set wildmode=list:longest,list:full
+set wildmode=longest,list,full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,.gems,.bin
 set wildignore+=*.png,*.jpg,*.gif,*.woff,*.ttf,*.eot
-set wildignore+=test/fixtures/*,vendor/gems/*,node_modules,log,tmp
+set wildignore+=test/fixtures/*,vendor/gems/*,node_modules/**,log/**,tmp/**
 
 " http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/
 set exrc   " enable per-directory .vimrc files
@@ -183,6 +187,9 @@ if exists("g:rspec_command")
   nmap <leader>sr :call RunLastSpec()<cr>
 endif
 
+nmap <leader>b :CommandTBuffer<cr>
+nmap <leader>t :CommandT<cr>
+nmap <leader>T :CommandTFlush<cr>
 let g:CommandTMaxHeight=15
 let g:CommandTCancelMap=['<Esc>', '<C-c>']
 let g:CommandTMatchWindowReverse=1
@@ -198,6 +205,18 @@ let g:syntastic_javascript_jshint_conf='~/.jshintrc'
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_quiet_warnings = 0
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss'] }
+
+function! ImprovedNERDTreeToggle()
+  if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
+    :NERDTreeToggle
+  else
+    :NERDTreeFind
+  endif
+endfunction
+
+nmap <leader>f :call ImprovedNERDTreeToggle()<CR>
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 augroup plugins
   autocmd!
