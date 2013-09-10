@@ -24,6 +24,10 @@ function! GitStatusLine()
   return ret
 endfunction
 
+hi clear User1 " Used in the status line.
+hi Comment ctermfg=8
+hi Search cterm=inverse ctermfg=11 ctermbg=NONE
+
 set laststatus=2
 set statusline=%3n\ %1*%-25.80f%*
 set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
@@ -76,7 +80,6 @@ set colorcolumn=+1
 set formatoptions=cq
 try | set formatoptions+=j | catch | endtry
 set scrolloff=3
-set showcmd
 
 " Disable swap files
 set noswapfile
@@ -120,9 +123,6 @@ set gdefault
 set incsearch
 set hlsearch
 nnoremap <leader><leader> :nohlsearch<cr>
-
-" Navigation
-set scrolloff=3
 
 " Commands
 
