@@ -2,6 +2,7 @@ source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
 set t_Co=256
+set encoding=utf-8
 
 syntax on
 colorscheme hemisu
@@ -27,6 +28,8 @@ endfunction
 hi clear User1 " Used in the status line.
 hi Comment ctermfg=8
 hi Search cterm=inverse ctermfg=11 ctermbg=NONE
+hi Todo ctermbg=NONE ctermfg=3
+hi SpellBad cterm=reverse ctermfg=14 ctermbg=NONE
 
 set laststatus=2
 set statusline=%3n\ %1*%-25.80f%*
@@ -224,5 +227,5 @@ augroup plugins
   autocmd InsertLeave * :setlocal hlsearch
   autocmd FileType css,scss,less,html,xml,erb setlocal iskeyword+=-
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
-  autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler
+  autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
 augroup END
