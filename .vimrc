@@ -115,6 +115,7 @@ imap <D-≥> <C-_>
 nmap <leader>cc :cclose<cr>
 
 " Split windows
+let &winwidth = &columns * 19 / 32
 set splitbelow
 nnoremap <leader>w <C-w>v<C-w><C-w>
 
@@ -196,10 +197,6 @@ if exists("g:rspec_command")
   nmap <leader>sr :call RunLastSpec()<cr>
 endif
 
-nmap <leader>b :CommandTBuffer<cr>
-nmap <leader>t :CommandT<cr>
-nmap <leader>d :CommandT %%<cr>
-nmap <leader>T :CommandTFlush<cr>
 let g:CommandTMaxHeight=15
 let g:CommandTCancelMap=['<Esc>', '<C-c>']
 let g:CommandTMatchWindowReverse=1
@@ -236,3 +233,44 @@ augroup plugins
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
 augroup END
+
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+nmap <leader>b :CtrlPBuffer<cr>
+nmap <leader>t :CtrlP<cr>
+nmap <leader>T :CtrlP %%<cr>
+
+hi CtrlPMatch ctermfg=9
+hi CtrlPLinePre ctermfg=8
+
+let g:ctrlp_status_func = {
+  \ 'main': 'CtrlP_Statusline_1',
+  \ 'prog': 'CtrlP_Statusline_2',
+  \ }
+
+" CtrlP_Statusline_1 and CtrlP_Statusline_2 both must return a full statusline
+" and are accessible globally.
+" Arguments: focus, byfname, s:regexp, prv, item, nxt, marked
+"            a:1    a:2      a:3       a:4  a:5   a:6  a:7
+fu! CtrlP_Statusline_1(...)
+  let dir = ' %=%#LineNr# '.getcwd().' %*'
+  retu a:5.dir
+endf
+
+" Argument: len
+"           a:1
+fu! CtrlP_Statusline_2(...)
+  let len = '%#Function# '.a:1.' %*'
+  let dir = ' %=%#LineNr# '.getcwd().' %*'
+  " Return the full statusline
+  retu len.dir
+endf
