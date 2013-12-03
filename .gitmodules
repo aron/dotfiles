@@ -94,3 +94,6 @@
 [submodule ".vim/bundle/vim-tabular"]
 	path = .vim/bundle/vim-tabular
 	url = git@github.com:godlygeek/tabular.git
+[submodule "/Users/Aron/.vim/bundle/vim-ctrlp"]
+	path = /Users/Aron/.vim/bundle/vim-ctrlp
+	url = git@github.com:kien/ctrlp.vim.git
