@@ -84,7 +84,7 @@ precmd() {
   vcs_info
 }
 
-PROMPT='%~ ${vcs_info_msg_0_}%% '
+PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
 RPROMPT=""
 
 # Compile the completion dump, to increase startup speed.
