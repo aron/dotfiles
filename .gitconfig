@@ -5,10 +5,6 @@
 [branch]
   autosetupmerge=true
 
-[branch "master"]
-  remote=origin
-  merge=refs/heads/master
-
 [push]
   default=simple
 
