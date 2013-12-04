@@ -3,6 +3,7 @@ call pathogen#infect()
 
 set t_Co=256
 set encoding=utf-8
+set shellpipe=> " do not pipe commands such as Ack to stdout.
 
 syntax on
 colorscheme hemisu
@@ -175,10 +176,15 @@ let g:netrw_liststyle = 0
 
 nmap <leader>a  :Ack
 nmap <leader>as :AckFromSearch<cr>
-nmap <leader>rc :Rcontroller
-nmap <leader>rm :Rmodel
-nmap <leader>rv :Rview
+nmap <leader>oc :Rcontroller
+nmap <leader>om :Rmodel
+nmap <leader>ov :Rview
 nmap <leader>gb :Gbrowse<cr>
+nmap <leader>rr :call RunLastSpec()<cr>
+nmap <leader>rt :call RunNearestSpec()<cr>
+nmap <leader>rs :call RunCurrentSpecFile()<cr>
+nnoremap [b :BB<cr>
+nnoremap ]b :BF<cr>
 
 " Load the plugin and indent settings for the detected filetype
 filetype plugin indent on
@@ -192,6 +198,7 @@ endif
 
 nmap <leader>b :CommandTBuffer<cr>
 nmap <leader>t :CommandT<cr>
+nmap <leader>d :CommandT %%<cr>
 nmap <leader>T :CommandTFlush<cr>
 let g:CommandTMaxHeight=15
 let g:CommandTCancelMap=['<Esc>', '<C-c>']
@@ -225,7 +232,7 @@ augroup plugins
   autocmd!
   autocmd InsertEnter * :setlocal nohlsearch
   autocmd InsertLeave * :setlocal hlsearch
-  autocmd FileType css,scss,less,html,xml,erb setlocal iskeyword+=-
+  autocmd FileType css,scss,less,html,xml,eruby setlocal iskeyword+=-
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
 augroup END
