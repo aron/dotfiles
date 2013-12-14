@@ -97,3 +97,6 @@
 [submodule "/Users/Aron/.vim/bundle/vim-ctrlp"]
 	path = /Users/Aron/.vim/bundle/vim-ctrlp
 	url = git@github.com:kien/ctrlp.vim.git
+[submodule ".vim/bundle/vim-rspec"]
+	path = .vim/bundle/vim-rspec
+	url = git@github.com:thoughtbot/vim-rspec.git
