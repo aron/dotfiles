@@ -20,6 +20,21 @@ augroup color_scheme
   au InsertLeave * hi StatusLine cterm=bold ctermbg=None ctermfg=black
 augroup END
 
+" http://stackoverflow.com/questions/4292733/vim-creating-parent-directories-on-save
+function s:EnsureDirectory(file, buf)
+  if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+    let dir=fnamemodify(a:file, ':h')
+    if !isdirectory(dir)
+      call mkdir(dir, 'p')
+    endif
+  endif
+endfunction
+
+augroup ensure_directory
+  au!
+  au BufWritePre * :call s:EnsureDirectory(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
 function! GitStatusLine()
   let ret = fugitive#statusline()
   let ret = substitute(ret, '\c\v\[?GIT\(([a-z0-9\-_\./:]+)\)\]?', nr2char(0x2b60) .' \1', 'g')
