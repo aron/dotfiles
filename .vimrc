@@ -267,6 +267,12 @@ nmap <leader>T :CtrlP %%<cr>
 hi CtrlPMatch ctermfg=9
 hi CtrlPLinePre ctermfg=8
 
+let g:ctrlp_mruf_relative = 1
+let g:ctrlp_switch_buffer = 1
+let g:ctrlp_reuse_window = 'netrw\|nerdtree'
+let g:ctrlp_match_window_bottom = 1
+let g:ctrlp_match_window_reversed = 1
+let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|gems|bundle|sass-cache)|tmp)|\.(png|jpg|jpeg|gif|woff|ttf|eot|sock)$'
 let g:ctrlp_status_func = {
   \ 'main': 'CtrlP_Statusline_1',
   \ 'prog': 'CtrlP_Statusline_2',
