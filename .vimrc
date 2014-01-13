@@ -1,12 +1,14 @@
-source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
+if filereadable("~/.vim/bundle/vim-pathogen/autoload/pathogen.vim")
+  source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
+  call pathogen#infect()
+endif
 
 set t_Co=256
 set encoding=utf-8
 set shellpipe=> " do not pipe commands such as Ack to stdout.
 
 syntax on
-colorscheme hemisu
+silent! colorscheme hemisu
 
 set background=dark
 hi Normal ctermbg=NONE
