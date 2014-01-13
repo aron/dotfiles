@@ -41,7 +41,10 @@ source "$HOME/.zsh/directory.zsh"
 source "$HOME/.zsh/history-substring-search.zsh"
 
 # Source rbenv completion.
-source /usr/local/Cellar/rbenv/0.4.0/completions/rbenv.zsh
+RBENV_COMPLETION=/usr/local/Cellar/rbenv/0.4.0/completions/rbenv.zsh
+if [ -f "$RBENV_COMPLETION" ]; then
+  source RBENV_COMPLETION
+fi
 
 zstyle ':vcs_info:*'  enable git hg svn
 zstyle ':vcs_info:*'  check-for-changes true
@@ -89,6 +92,7 @@ RPROMPT=""
 
 # Compile the completion dump, to increase startup speed.
 dump_file="$HOME/.zsh/compdump.tmp"
+touch $dump_file
 if [[ "$dump_file" -nt "${dump_file}.zwc" || ! -f "${dump_file}.zwc" ]]; then
   zcompile "$dump_file"
 fi

@@ -64,18 +64,17 @@ pman () {
 }
 
 __hg_ps1() {
-  hg branch 2> /dev/null | awk "{printf "(%s)", $1}"
+  if [ -x "$(which hg)" ]; then
+    hg branch 2> /dev/null | awk "{printf \"(%s)\", $1}"
+  fi
 }
 
 if [[ $SHELL == "/bin/bash" ]]; then
   export PS1='\W/$(__git_ps1 "(%s)")$(__hg_ps1) % '
-  source $HOME/.svn-completion
-  source $HOME/.django-completion
-  source /usr/local/etc/bash_completion.d/git-completion.bash
-  source /usr/local/etc/bash_completion.d/git-flow-completion.bash
 fi
-NPM_COMPLETION=/usr/local/etc/bash_completion.d/npm-completion.bash
-[ -e NPM_COMPLETION ] && source NPM_COMPLETION
 
-source $HOME/.private
+if [[ -f $HOME/.private ]]; then
+  source $HOME/.private
+fi
+
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages:
