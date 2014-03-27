@@ -251,6 +251,12 @@ augroup plugins
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
 augroup END
 
+let g:yankstack_map_keys = 0
+nmap <leader>p <Plug>yankstack_substitute_older_paste
+nmap <leader>P <Plug>yankstack_substitute_older_paste
+imap <c-p> <Plug>yankstack_substitute_older_paste
+imap <c-P> <Plug>yankstack_substitute_newer_paste
+
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
