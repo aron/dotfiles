@@ -46,6 +46,11 @@ if [ -f "$RBENV_COMPLETION" ]; then
   source RBENV_COMPLETION
 fi
 
+NVM_COMPLETION=$HOME/.nvm/bash_completion
+if [[ -f "$NVM_COMPLETION" ]]; then
+  source "$NVM_COMPLETION"
+fi
+
 zstyle ':vcs_info:*'  enable git hg svn
 zstyle ':vcs_info:*'  check-for-changes true
 zstyle ':vcs_info:*'  stagedstr     "+"
