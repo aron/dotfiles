@@ -8,11 +8,11 @@ set encoding=utf-8
 set shellpipe=> " do not pipe commands such as Ack to stdout.
 
 syntax on
-silent! colorscheme hemisu
+silent! colorscheme shady
 
 set background=dark
 hi Normal ctermbg=NONE
-hi ColorColumn ctermbg=238
+hi ColorColumn ctermbg=234 ctermfg=NONE
 
 augroup color_scheme
   au!
@@ -44,13 +44,14 @@ function! GitStatusLine()
 endfunction
 
 hi clear User1 " Used in the status line.
-hi Comment ctermfg=8
-hi Search cterm=inverse ctermfg=11 ctermbg=NONE
-hi Todo ctermbg=NONE ctermfg=3
-hi SpellBad cterm=reverse ctermfg=14 ctermbg=NONE
+hi gitcommitOverflow ctermfg=red
+hi SpellBad cterm=reverse ctermfg=red ctermbg=NONE
+" hi Comment ctermfg=8
+" hi Search cterm=inverse ctermfg=11 ctermbg=NONE
+" hi Todo ctermbg=NONE ctermfg=3
 
 set laststatus=2
-set statusline=%3n\ %1*%-25.80f%*
+set statusline=%(\ %q%w%r%h%#StatusLineErr#%m%*%)\ #%n\ %{FilePath()}
 set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
 set statusline+=\ %{strlen(&ft)?&ft:'none'}
 set statusline+=\ %(\ %r%m%w%)
@@ -60,6 +61,26 @@ set statusline+=\ %l
 set statusline+=/
 set statusline+=%L
 set statusline+=\ %p%%
+
+" to display a variable-length file path according the width of the
+" current window
+fu! FilePath()
+    let tail = expand('%:p:t')
+    if empty(tail)
+        return "[no name]"
+    endif
+    if !empty(&bt)
+        return tail
+    endif
+    let head = substitute(expand('%:p:h'), $HOME, '~', '') . "/"
+    let x = winwidth(winnr()) - 50
+    let maxlen = float2nr(5 * sqrt(x < 0 ? 0 : x))
+    if strlen(head) > maxlen
+        let head = strpart(head, strlen(head) - maxlen)
+        let head = strpart(head, match(head, '/') + 1)
+    endif
+    return head . tail
+endfu
 
 " Display
 set number
@@ -97,10 +118,10 @@ set autoread
 
 " Columns
 set textwidth=79
-set colorcolumn=+1
+set colorcolumn=+1,120
 set formatoptions=cq
 try | set formatoptions+=j | catch | endtry
-set scrolloff=3
+set scrolloff=15
 
 " Disable swap files
 set noswapfile
@@ -109,8 +130,8 @@ set undofile
 set hidden
 
 " Remap Leader
-nnoremap " " <Nop>
-let mapleader=" "
+let mapleader = "\<Space>"
+
 
 " Set encoding
 set encoding=utf-8
@@ -132,7 +153,6 @@ imap <D-≥> <C-_>
 nmap <leader>cc :cclose<cr>
 
 " Split windows
-let &winwidth = &columns * 19 / 32
 set splitbelow
 nnoremap <leader>w <C-w>v<C-w><C-w>
 
@@ -144,7 +164,7 @@ set smartcase
 set gdefault
 set incsearch
 set hlsearch
-nnoremap <leader><leader> :nohlsearch<cr>
+nmap <leader><space> :nohlsearch<cr>
 
 " Commands
 
@@ -194,9 +214,6 @@ let g:netrw_liststyle = 0
 
 nmap <leader>a  :Ack
 nmap <leader>as :AckFromSearch<cr>
-nmap <leader>oc :Rcontroller
-nmap <leader>om :Rmodel
-nmap <leader>ov :Rview
 nmap <leader>gb :Gbrowse<cr>
 nmap <leader>rr :call RunLastSpec()<cr>
 nmap <leader>rt :call RunNearestSpec()<cr>
@@ -241,6 +258,9 @@ endfunction
 nmap <leader>f :call ImprovedNERDTreeToggle()<CR>
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
 augroup plugins
   autocmd!
