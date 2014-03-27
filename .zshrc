@@ -41,9 +41,9 @@ source "$HOME/.zsh/directory.zsh"
 source "$HOME/.zsh/history-substring-search.zsh"
 
 # Source rbenv completion.
-RBENV_COMPLETION=/usr/local/Cellar/rbenv/0.4.0/completions/rbenv.zsh
+RBENV_COMPLETION=$(brew info rbenv | grep '*' | cut -d\  -f1)/completions/rbenv.zsh
 if [ -f "$RBENV_COMPLETION" ]; then
-  source RBENV_COMPLETION
+  source "$RBENV_COMPLETION"
 fi
 
 NVM_COMPLETION=$HOME/.nvm/bash_completion

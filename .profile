@@ -59,10 +59,6 @@ rbenvinit () {
   [ -e "$(which less)" ] && eval "$(rbenv init - zsh)"
 }
 
-pman () {
-  man -t $1 | open -a /Applications/Preview.app -f
-}
-
 __hg_ps1() {
   if [ -x "$(which hg)" ]; then
     hg branch 2> /dev/null | awk "{printf \"(%s)\", $1}"
