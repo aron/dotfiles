@@ -103,3 +103,6 @@
 [submodule ".vim/bundle/vim-textobj-function-javascript"]
 	path = .vim/bundle/vim-textobj-function-javascript
 	url = git@github.com:thinca/vim-textobj-function-javascript.git
+[submodule ".vim/bundle/vim-javascript-syntax"]
+	path = .vim/bundle/vim-javascript-syntax
+	url = git@github.com:jelera/vim-javascript-syntax.git
