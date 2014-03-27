@@ -28,9 +28,6 @@
 [submodule "vim/bundle/vim-eunuch"]
 	path = vim/bundle/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch
-[submodule ".vim/bundle/vim-theme-hemisu"]
-  path = .vim/bundle/vim-theme-hemisu
-	url = git@github.com:noahfrederick/Hemisu.git
 [submodule "vim/bundle/vim-coffee-script"]
 	path = vim/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script
@@ -40,9 +37,6 @@
 [submodule ".vim/bundle/vim-syntastic"]
 	path = .vim/bundle/vim-syntastic
 	url = git@github.com:scrooloose/syntastic.git
-[submodule ".vim/bundle/vim-command-t"]
-	path = .vim/bundle/vim-command-t
-	url = git@github.com:wincent/Command-T.git
 [submodule ".vim/bundle/vim-pathogen"]
 	path = .vim/bundle/vim-pathogen
 	url = git@github.com:tpope/vim-pathogen.git
@@ -52,9 +46,6 @@
 [submodule ".vim/bundle/vim-repeat"]
 	path = .vim/bundle/vim-repeat
 	url = git@github.com:tpope/vim-repeat.git
-[submodule ".vim/bundle/vim-rails"]
-	path = .vim/bundle/vim-rails
-	url = git@github.com:tpope/vim-rails.git
 [submodule ".vim/bundle/vim-eunuch"]
 	path = .vim/bundle/vim-eunuch
 	url = git@github.com:tpope/vim-eunuch.git
@@ -94,12 +85,27 @@
 [submodule ".vim/bundle/vim-tabular"]
 	path = .vim/bundle/vim-tabular
 	url = git@github.com:godlygeek/tabular.git
-[submodule "/Users/Aron/.vim/bundle/vim-ctrlp"]
-	path = /Users/Aron/.vim/bundle/vim-ctrlp
+[submodule ".vim/bundle/vim-ctrlp"]
+	path = .vim/bundle/vim-ctrlp
 	url = git@github.com:kien/ctrlp.vim.git
-[submodule ".vim/bundle/vim-rspec"]
-	path = .vim/bundle/vim-rspec
-	url = git@github.com:thoughtbot/vim-rspec.git
-[submodule "vim-yankstack"]
-	path = vim-yankstack
-	url = /Users/Aron/.vim/bundle/vim-yankstack
+[submodule ".vim/bundle/vim-yankstack"]
+	path = .vim/bundle/vim-yankstack
+	url = https://github.com/maxbrunsfeld/vim-yankstack.git
+[submodule ".vim/bundle/theme-shady"]
+	path = .vim/bundle/theme-shady
+	url = git@github.com:cloudhead/shady.vim.git
+[submodule ".vim/bundle/vim-expand-region"]
+	path = .vim/bundle/vim-expand-region
+	url = git@github.com:terryma/vim-expand-region.git
+[submodule ".vim/bundle/vim-editorconfig"]
+	path = .vim/bundle/vim-editorconfig
+	url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule ".vim/bundle/vim-ag"]
+	path = .vim/bundle/vim-ag
+	url = git@github.com:vim-scripts/ag.vim.git
+[submodule ".vim/bundle/vim-textobj-javascript-function"]
+	path = .vim/bundle/vim-textobj-javascript-function
+	url = git@github.com:thinca/vim-textobj-function-javascript.git
+[submodule ".vim/bundle/vim-javascript-syntax"]
+	path = .vim/bundle/vim-javascript-syntax
+	url = git@github.com:pangloss/vim-javascript.git

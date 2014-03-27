@@ -244,7 +244,7 @@ let g:gist_private = 1
 let g:syntastic_javascript_checkers=["jshint"]
 let g:syntastic_javascript_jshint_conf='~/.jshintrc'
 let g:syntastic_enable_highlighting = 1
-let g:syntastic_quiet_warnings = 0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss'] }
 
 function! ImprovedNERDTreeToggle()
