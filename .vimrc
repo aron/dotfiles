@@ -1,5 +1,5 @@
-if filereadable("~/.vim/bundle/vim-pathogen/autoload/pathogen.vim")
-  source ~/.vim/bundle/vim-pathogen/autoload/pathogen.vim
+if filereadable($HOME . "/.vim/bundle/vim-pathogen/autoload/pathogen.vim")
+  source $HOME/.vim/bundle/vim-pathogen/autoload/pathogen.vim
   call pathogen#infect()
 endif
 
@@ -23,7 +23,7 @@ augroup color_scheme
 augroup END
 
 " http://stackoverflow.com/questions/4292733/vim-creating-parent-directories-on-save
-function s:EnsureDirectory(file, buf)
+function! s:EnsureDirectory(file, buf)
   if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
     let dir=fnamemodify(a:file, ':h')
     if !isdirectory(dir)
