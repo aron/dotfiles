@@ -77,4 +77,8 @@ if [[ -f $HOME/.private ]]; then
   source $HOME/.private
 fi
 
+if [[ -f $HOME/.nvm/nvm.sh ]]; then
+  source $HOME/.nvm/nvm.sh
+fi
+
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages:
