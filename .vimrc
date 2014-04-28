@@ -12,6 +12,7 @@ silent! colorscheme shady
 
 set background=dark
 hi Normal ctermbg=NONE
+hi SpellBad cterm=underline ctermfg=9
 hi ColorColumn ctermbg=234 ctermfg=NONE
 
 augroup color_scheme
@@ -20,6 +21,11 @@ augroup color_scheme
   " now set it up to change the status line based on mode
   au InsertEnter * hi StatusLine cterm=bold ctermbg=None ctermfg=white
   au InsertLeave * hi StatusLine cterm=bold ctermbg=None ctermfg=black
+augroup END
+
+augroup javascript
+  au!
+  autocmd FileType javascript abbr puts console.log
 augroup END
 
 " http://stackoverflow.com/questions/4292733/vim-creating-parent-directories-on-save
@@ -270,12 +276,6 @@ augroup plugins
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
 augroup END
-
-let g:yankstack_map_keys = 0
-nmap <leader>p <Plug>yankstack_substitute_older_paste
-nmap <leader>P <Plug>yankstack_substitute_older_paste
-imap <c-p> <Plug>yankstack_substitute_older_paste
-imap <c-P> <Plug>yankstack_substitute_newer_paste
 
 if executable('ag')
   " Use ag over grep
