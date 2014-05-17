@@ -14,6 +14,7 @@ set background=dark
 hi Normal ctermbg=NONE
 hi SpellBad cterm=underline ctermfg=9
 hi ColorColumn ctermbg=234 ctermfg=NONE
+hi SignColumn ctermbg=NONE
 
 augroup color_scheme
   au!
@@ -247,10 +248,9 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 let g:gist_private = 1
 
-let g:syntastic_javascript_checkers=["jshint"]
+let g:syntastic_javascript_checkers=["jshint", 'jscs']
 let g:syntastic_javascript_jshint_conf='~/.jshintrc'
 let g:syntastic_enable_highlighting = 1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss'] }
 
 function! ImprovedNERDTreeToggle()
