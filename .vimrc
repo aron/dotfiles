@@ -1,7 +1,44 @@
-if filereadable($HOME . "/.vim/bundle/vim-pathogen/autoload/pathogen.vim")
-  source $HOME/.vim/bundle/vim-pathogen/autoload/pathogen.vim
-  call pathogen#infect()
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+NeoBundle 'cloudhead/shady.vim'
+NeoBundle 'duwanis/tomdoc.vim'
+NeoBundle 'editorconfig/editorconfig-vim'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'hynek/vim-python-pep8-indent'
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'kevinw/pyflakes-vim'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'nvie/vim-flake8'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'thinca/vim-textobj-function-javascript'
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'tpope/vim-abolish'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-git'
+NeoBundle 'tpope/vim-markdown'
+NeoBundle 'tpope/vim-pathogen'
+NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'vim-scripts/ag.vim'
+NeoBundleFetch 'shougo/neobundle.vim'
+
+call neobundle#end()
+
+NeoBundleCheck
 
 set t_Co=256
 set encoding=utf-8
@@ -57,17 +94,32 @@ hi SpellBad cterm=reverse ctermfg=red ctermbg=NONE
 " hi Search cterm=inverse ctermfg=11 ctermbg=NONE
 " hi Todo ctermbg=NONE ctermfg=3
 
+function! Column()
+  let vc = virtcol('.')
+  let ruler_width = max([strlen(line('$')), (&numberwidth - 1)])
+  let column_width = strlen(vc)
+  let padding = ruler_width - column_width
+  let column = ''
+
+  if padding <= 0
+    let column .= vc
+  else
+    " + 1 becuase for some reason vim
+    " eats one of the spaces
+    let column .= repeat(' ', padding + 1) . vc
+  endif
+
+  return column
+endfunction
+
 set laststatus=2
-set statusline=%(\ %q%w%r%h%#StatusLineErr#%m%*%)\ #%n\ %{FilePath()}
+set statusline=%{Column()}%(\ %q%w%r%h%#StatusLineErr#%m%*%)\ %{FilePath()}
 set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
 set statusline+=\ %{strlen(&ft)?&ft:'none'}
 set statusline+=\ %(\ %r%m%w%)
 set statusline+=%=
 set statusline+=%{exists('g:syntastic_exists')?SyntasticStatuslineFlag():''}
-set statusline+=\ %l
-set statusline+=/
-set statusline+=%L
-set statusline+=\ %p%%
+set statusline+=%p%%
 
 " to display a variable-length file path according the width of the
 " current window
@@ -181,7 +233,7 @@ cabbr <expr> %f expand('%:t')
 
 " Tab completion
 set wildmode=longest,list,full
-set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,.gems,.bin
+set wildignore+=*.o,*.pyc,*.egg,*.obj,.git,*.rbc,*.class,.svn,.gems,.bin
 set wildignore+=*.png,*.jpg,*.gif,*.woff,*.ttf,*.eot
 set wildignore+=test/fixtures/*,vendor/gems/*,node_modules/**,log/**,tmp/**
 
@@ -264,6 +316,7 @@ endfunction
 nmap <leader>f :call ImprovedNERDTreeToggle()<CR>
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let NERDTreeIgnore = ['\.pyc$']
 
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
@@ -300,7 +353,7 @@ let g:ctrlp_switch_buffer = 1
 let g:ctrlp_reuse_window = 'netrw\|nerdtree'
 let g:ctrlp_match_window_bottom = 1
 let g:ctrlp_match_window_reversed = 1
-let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|gems|bundle|sass-cache)|tmp)|\.(png|jpg|jpeg|gif|woff|ttf|eot|sock)$'
+let g:ctrlp_custom_ignore = '\v[\/](\.(git|hg|svn|gems|bundle|sass-cache)|env|node_modules|tmp)|\.(pyc,png|jpg|jpeg|gif|woff|ttf|eot|sock)$'
 let g:ctrlp_status_func = {
   \ 'main': 'CtrlP_Statusline_1',
   \ 'prog': 'CtrlP_Statusline_2',
