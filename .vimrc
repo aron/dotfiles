@@ -12,7 +12,7 @@ NeoBundle 'hynek/vim-python-pep8-indent'
 NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'kevinw/pyflakes-vim'
+" NeoBundle 'kevinw/pyflakes-vim'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'nvie/vim-flake8'
 NeoBundle 'pangloss/vim-javascript'
@@ -20,6 +20,8 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'thinca/vim-textobj-function-javascript'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/gist-vim'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'tpope/vim-abolish'
 NeoBundle 'tpope/vim-dispatch'
@@ -34,6 +36,8 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'vim-scripts/ag.vim'
+NeoBundle 'vim-scripts/matchparenpp'
+NeoBundle 'haya14busa/vim-sneak'
 NeoBundleFetch 'shougo/neobundle.vim'
 
 call neobundle#end()
@@ -52,6 +56,7 @@ hi Normal ctermbg=NONE
 hi SpellBad cterm=underline ctermfg=9
 hi ColorColumn ctermbg=234 ctermfg=NONE
 hi SignColumn ctermbg=NONE
+hi MatchParen cterm=reverse
 
 augroup color_scheme
   au!
@@ -156,16 +161,16 @@ cnoreabbrev Q  q
 cnoreabbrev W  w
 cnoreabbrev Wq wq
 
-" Remap keys for tmux
-map <Esc>[A <Up>
-map <Esc>[B <Down>
-map <Esc>[C <Right>
-map <Esc>[D <Left>
-
 " Mouse
 set mouse=a
 if exists('$TMUX')  " Support resizing in tmux
   set ttymouse=xterm2
+
+  " Remap keys for tmux. Disabled while using iterm.
+  " map <Esc>[A <Up>
+  " map <Esc>[B <Down>
+  " map <Esc>[C <Right>
+  " map <Esc>[D <Left>
 endif
 
 " No vi compatibility
@@ -271,8 +276,8 @@ let g:netrw_preview = 1
 let g:netrw_list_hide = ''
 let g:netrw_liststyle = 0
 
-nmap <leader>a  :Ack
-nmap <leader>as :AckFromSearch<cr>
+nmap <leader>a  :Ag!
+nmap <leader>as :AgFromSearch!<cr>
 nmap <leader>gb :Gbrowse<cr>
 nmap <leader>rr :call RunLastSpec()<cr>
 nmap <leader>rt :call RunNearestSpec()<cr>
@@ -291,7 +296,7 @@ if exists("g:rspec_command")
 endif
 
 let g:CommandTMaxHeight=15
-let g:CommandTCancelMap=['<Esc>', '<C-c>']
+" let g:CommandTCancelMap=['<Esc>', '<C-c>']
 let g:CommandTMatchWindowReverse=1
 
 " gist-vim: https://github.com/mattn/gist-vim
@@ -301,9 +306,10 @@ let g:gist_open_browser_after_post = 1
 let g:gist_private = 1
 
 let g:syntastic_javascript_checkers=["jshint", 'jscs']
-let g:syntastic_javascript_jshint_conf='~/.jshintrc'
+" let g:syntastic_javascript_jshint_args = '--config ~/.jshintrc'
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss'] }
+let g:syntastic_always_populate_loc_list = 1
 
 function! ImprovedNERDTreeToggle()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
