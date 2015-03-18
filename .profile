@@ -1,15 +1,12 @@
 export RBENV_ROOT=/usr/local/var/rbenv
-export NAVE_DIR=/usr/local/var/nave
+export NVM_DIR=/usr/local/var/nvm
 export WORKON_HOME=/usr/local/var/virtualenv
 
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
-export PATH=$NAVE_PATH:$PATH
 export PATH=$HOME/.bin:$PATH
-export PATH=node_modules/.bin:$PATH
-export PATH=bin:.bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -74,8 +71,6 @@ if [[ -f $HOME/.private ]]; then
   source $HOME/.private
 fi
 
-if [[ -f $HOME/.nvm/nvm.sh ]]; then
-  source $HOME/.nvm/nvm.sh
+if [[ -f $NVM_DIR/nvm.sh ]]; then
+  source $NVM_DIR/nvm.sh
 fi
-
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages:
