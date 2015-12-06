@@ -4,7 +4,7 @@
 		"GitHub":
 		{
 			"base_uri": "https://api.github.com",
-			"github_token": "3ce25b3c9b8e5f1e3c00bfd4838eaa9f2e99e354"
+			"github_token": ""
 		}
 	}
 }
