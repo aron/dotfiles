@@ -1,4 +1,6 @@
 #!/bin/sh
 
-cd "$(git rev-parse --show-toplevel)"
-git add "$(git diff --name-only --diff-filter=U)"
+cd $(git rev-parse --show-toplevel)
+FIXED_FILES=$(git diff --name-only --diff-filter=U)
+echo $FIXED_FILES | xargs git add
+echo "Staged the following fixed files...\n$FIXED_FILES"
