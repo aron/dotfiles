@@ -190,23 +190,19 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
-	<key>NSColorPanelMode</key>
-	<string>6</string>
 	<key>NSFontPanelAttributes</key>
 	<string>1, 4</string>
-	<key>NSFontPanelPreviewHeight</key>
-	<real>0.0</real>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/.osx</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
-	<key>NSNavPanelExpandedSizeForSaveMode</key>
-	<string>{712, 565}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
 	<string></string>
 	<key>NSScrollAnimationEnabled</key>
+	<false/>
+	<key>NSScrollViewShouldScrollUnderTitlebar</key>
 	<false/>
 	<key>NSTableView Columns KeyBingingTable</key>
 	<array>
@@ -241,34 +237,12 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
-	<key>NSWindow Frame NSColorPanel</key>
-	<string>490 310 201 309 0 0 2560 1418 </string>
-	<key>NSWindow Frame NSFontPanel</key>
-	<string>811 258 788 325 0 0 2560 1417 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>363 334 924 485 0 0 2560 1417 </string>
+	<string>82 424 606 456 0 0 2560 1417 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>1081 967 384 129 0 0 2560 1417 </string>
-	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>330 289 620 392 0 0 1280 777 </string>
-	<key>NSWindow Frame UKCrashReporter</key>
-	<string>230 833 592 584 0 0 2560 1417 </string>
+	<string>1088 977 384 129 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 2560 1418 0 0 2560 1417 </string>
-	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1481 47 730 523 0 0 2560 1418 </string>
-	<key>NSWindow Frame iTerm Window 2</key>
-	<string>250 -489 1675 1013 0 0 1680 1028 </string>
-	<key>NSWindow Frame iTerm Window 3</key>
-	<string>271 -512 1675 1013 0 0 1680 1028 </string>
-	<key>NSWindow Frame iTerm Window 4</key>
-	<string>292 -535 1675 1013 0 0 1680 1028 </string>
-	<key>NSWindow Frame iTerm Window 5</key>
-	<string>799 -253 1675 1013 0 0 1680 1028 </string>
-	<key>NSWindow Frame iTerm Window 6</key>
-	<string>0 15 1675 1013 0 0 1680 1028 </string>
-	<key>NSWindow Frame iTerm Window 7</key>
-	<string>667 478 570 400 0 0 1680 1028 </string>
+	<string>493 408 1324 884 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -290,11 +264,11 @@
 			<key>Ansi 1 Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.3344864547252655</real>
+				<real>0.3333333432674408</real>
 				<key>Green Component</key>
-				<real>0.1920868307352066</real>
+				<real>0.0</real>
 				<key>Red Component</key>
-				<real>0.81507664918899536</real>
+				<real>1</real>
 			</dict>
 			<key>Ansi 10 Color</key>
 			<dict>
@@ -353,11 +327,11 @@
 			<key>Ansi 2 Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.21870489418506622</real>
+				<real>0.19215686619281769</real>
 				<key>Green Component</key>
-				<real>0.82701808214187622</real>
+				<real>0.84313726425170898</real>
 				<key>Red Component</key>
-				<real>0.73114711046218872</real>
+				<real>0.69411766529083252</real>
 			</dict>
 			<key>Ansi 3 Color</key>
 			<dict>
@@ -416,11 +390,11 @@
 			<key>Ansi 9 Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.46359091997146606</real>
+				<real>0.46274510025978088</real>
 				<key>Green Component</key>
-				<real>0.40447935461997986</real>
+				<real>0.36862745881080627</real>
 				<key>Red Component</key>
-				<real>0.7304261326789856</real>
+				<real>0.83921569585800171</real>
 			</dict>
 			<key>Automatically Log</key>
 			<false/>
@@ -818,11 +792,11 @@
 			<key>Name</key>
 			<string>tmux</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 13</string>
+			<string>SourceCodePro-Light 14</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SourceCodePro-Light 14</string>
+			<string>SourceCodePro-Light 15</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -997,10 +971,14 @@
 			<string>/Users/Aron</string>
 		</dict>
 	</array>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
+	<key>NoSyncLastTipTime</key>
+	<real>461238954.93386602</real>
+	<key>NoSyncNeverRemindPrefsChangesCopy</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
-	<integer>0</integer>
+	<key>NoSyncTimeOfLastPromo</key>
+	<real>454327120.27609903</real>
+	<key>NoSyncTimeOfLastPromoDownload</key>
+	<real>461149783.66986001</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -1009,6 +987,8 @@
 	<false/>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>1</integer>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PassOnControlClick</key>
 	<false/>
 	<key>PasteFromClipboard</key>
@@ -1063,11 +1043,11 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>http://iterm2.com/appcasts/testing.xml</string>
+	<string>https://iterm2.com/appcasts/testing3.xml</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-04-17T02:37:01Z</date>
+	<date>2015-08-13T08:39:35Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -1086,6 +1066,8 @@
 	<integer>4</integer>
 	<key>SwitchWindowModifier</key>
 	<integer>6</integer>
+	<key>TabStyle</key>
+	<integer>0</integer>
 	<key>TabViewType</key>
 	<integer>0</integer>
 	<key>ThreeFingerEmulates</key>
@@ -1094,12 +1076,10 @@
 	<integer>10</integer>
 	<key>ToolbeltTools</key>
 	<array>
-		<string>Jobs</string>
+		<string>Notes</string>
 	</array>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
-	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1423041792</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
@@ -1108,6 +1088,10 @@
 	<true/>
 	<key>UseLionStyleFullscreen</key>
 	<false/>
+	<key>WebKitDefaultFontSize</key>
+	<integer>11</integer>
+	<key>WebKitStandardFont</key>
+	<string>.Helvetica Neue DeskInterface</string>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WindowStyle</key>
@@ -1119,6 +1103,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.0.0.20150412</string>
+	<string>2.9.20150626</string>
 </dict>
 </plist>

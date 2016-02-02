@@ -9,7 +9,6 @@
   default=simple
 
 [alias]
-  amend=commit --amend --reuse-message
   co=checkout
   cb=checkout -b
   cl=checkout @{-1}
@@ -35,6 +34,7 @@
   pop=stash pop
   pull=pull --no-commit --no-ff
   pullff=pull --no-commit
+  recommit=commit --amend --no-edit
   tag=tag -n1
   patch=diff --no-prefix
   ml=merge @{-1} --ff-only

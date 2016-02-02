@@ -6,6 +6,8 @@ export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
+export PATH=$HOME/.homebrew/bin:$PATH
+export PATH=$HOME/.npm-global/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
@@ -74,3 +76,6 @@ fi
 if [[ -f $NVM_DIR/nvm.sh ]]; then
   source $NVM_DIR/nvm.sh
 fi
+
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

@@ -33,7 +33,13 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
 
 # Make zsh the login shell:
 
-    $ chsh -s /bin/usr/local/zsh
+    $ sudo echo /usr/bin/local/zsh >> /etc/shells
+    $ chsh -s /usr/bin/local/zsh
+
+# Install NeoBundle vim plugin
+
+    $ mkdir -p ~/.vim/bundle
+    $ git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 
 # Hide this Readme:
 

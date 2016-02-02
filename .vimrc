@@ -1,62 +1,68 @@
-if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
+" if has('vim_starting')
+"   set runtimepath+=~/.vim/bundle/neobundle.vim/
+" endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call plug#begin('~/.vim/bundle')
 
-NeoBundle 'cloudhead/shady.vim'
-NeoBundle 'duwanis/tomdoc.vim'
-NeoBundle 'editorconfig/editorconfig-vim'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'hynek/vim-python-pep8-indent'
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'kchmck/vim-coffee-script'
-" NeoBundle 'kevinw/pyflakes-vim'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'nvie/vim-flake8'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'terryma/vim-expand-region'
-NeoBundle 'thinca/vim-textobj-function-javascript'
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'mattn/gist-vim'
-NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'tpope/vim-abolish'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-git'
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'tpope/vim-pathogen'
-NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'vim-scripts/ag.vim'
-NeoBundle 'vim-scripts/matchparenpp'
-NeoBundle 'haya14busa/vim-sneak'
-NeoBundleFetch 'shougo/neobundle.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'cloudhead/shady.vim'
+Plug 'duwanis/tomdoc.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'gabesoft/vim-ags'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'hynek/vim-python-pep8-indent'
+" Plug 'JazzCore/ctrlp-cmatcher'
+Plug 'jlfwong/vim-arcanist'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'kergoth/vim-hilinks'
+Plug 'noahfrederick/vim-hemisu'
+" Plug 'kien/ctrlp.vim'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'mtscout6/vim-cjsx'
+Plug 'othree/yajs.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'terryma/vim-expand-region'
+Plug 'thinca/vim-textobj-function-javascript'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-pathogen'
+Plug 'tpope/vim-ragtag'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-ruby/vim-ruby'
+Plug 'vim-scripts/ag.vim'
+Plug 'vim-scripts/matchparenpp'
+Plug 'wellle/targets.vim'
 
-call neobundle#end()
-
-NeoBundleCheck
+call plug#end()
 
 set t_Co=256
 set encoding=utf-8
 set shellpipe=> " do not pipe commands such as Ack to stdout.
 
 syntax on
-silent! colorscheme shady
 
+silent! colorscheme shady
 set background=dark
 hi Normal ctermbg=NONE
-hi SpellBad cterm=underline ctermfg=9
-hi ColorColumn ctermbg=234 ctermfg=NONE
+hi SpellBad cterm=underline ctermfg=9 guifg=#df7588 gui=underline
+hi ColorColumn ctermbg=234 ctermfg=NONE guifg=#1c1c1c
 hi SignColumn ctermbg=NONE
 hi MatchParen cterm=reverse
+hi diffAdded cterm=bold ctermfg=2 guifg=#fe2a66
 
 augroup color_scheme
   au!
@@ -179,13 +185,14 @@ set nostartofline
 set visualbell
 set timeoutlen=500
 set autoread
+set history=1000
 
 " Columns
 set textwidth=79
 set colorcolumn=+1,120
 set formatoptions=cq
 try | set formatoptions+=j | catch | endtry
-set scrolloff=15
+set scrolloff=3
 
 " Disable swap files
 set noswapfile
@@ -214,11 +221,15 @@ set backspace=indent,eol,start
 inoremap <M-enter> <C-m><C-u>
 imap <D-≥> <C-_>
 
-nmap <leader>cc :cclose<cr>
+map <leader>cc :cclose <bar> lclose <cr>
+
+map <leader>y "*y
+map <leader>x "*x
+map <leader>d "*d
 
 " Split windows
 set splitbelow
-nnoremap <leader>w <C-w>v<C-w><C-w>
+map <leader>w <C-w>v<C-w><C-w>
 
 " Searching
 nnoremap / /\V
@@ -333,7 +344,7 @@ augroup plugins
   autocmd InsertLeave * :setlocal hlsearch
   autocmd FileType css,scss,less,html,xml,eruby setlocal iskeyword+=-
   autocmd FileType scss,javascript,coffee setlocal iskeyword+=$
-  autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler spell
+  autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler
 augroup END
 
 if executable('ag')
@@ -354,6 +365,7 @@ nmap <leader>T :CtrlP %%<cr>
 hi CtrlPMatch ctermfg=9
 hi CtrlPLinePre ctermfg=8
 
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_switch_buffer = 1
 let g:ctrlp_reuse_window = 'netrw\|nerdtree'
@@ -382,3 +394,19 @@ fu! CtrlP_Statusline_2(...)
   " Return the full statusline
   retu len.dir
 endf
+
+fu! JoinParagraphs()
+  let prev=&textwidth
+  let &textwidth=99999999
+  exec 'normal! gggqG'
+  let &textwidth=prev
+endf
+
+if has('mouse_sgr')
+  set ttymouse=sgr
+endif
+
+let macvim_skip_colorscheme=1
+
+let g:fzf_command_prefix = 'FZF'
+nmap <C-p> :FZFFiles<cr>
