@@ -61,7 +61,7 @@ rbenvinit () {
 
 __hg_ps1() {
   if [ -x "$(which hg)" ]; then
-    hg branch 2> /dev/null | awk "{printf \"(%s)\", $1}"
+    hg branch 2> /dev/null | awk '{printf "(%s)", $1}'
   fi
 }
 
