@@ -7,7 +7,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'chriskempson/base16-vim'
 Plug 'cloudhead/shady.vim'
 Plug 'duwanis/tomdoc.vim'
-Plug 'editorconfig/editorconfig-vim'
+" Plug 'editorconfig/editorconfig-vim'
 Plug 'gabesoft/vim-ags'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'hynek/vim-python-pep8-indent'
