@@ -17,6 +17,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kergoth/vim-hilinks'
+Plug 'leafgarland/typescript-vim'
 Plug 'noahfrederick/vim-hemisu'
 " Plug 'kien/ctrlp.vim'
 Plug 'mattn/gist-vim'
@@ -170,7 +171,7 @@ cnoreabbrev Wq wq
 " Mouse
 set mouse=a
 if exists('$TMUX')  " Support resizing in tmux
-  set ttymouse=xterm2
+  " set ttymouse=xterm2
 
   " Remap keys for tmux. Disabled while using iterm.
   " map <Esc>[A <Up>
