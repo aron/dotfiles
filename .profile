@@ -1,5 +1,5 @@
 export RBENV_ROOT=/usr/local/var/rbenv
-export NVM_DIR=/usr/local/var/nvm
+export NVM_DIR=$HOME/.nvm-builds
 export WORKON_HOME=/usr/local/var/virtualenv
 
 export PATH=/usr/local/apache2/bin:$PATH
