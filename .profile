@@ -1,5 +1,5 @@
 export RBENV_ROOT=/usr/local/var/rbenv
-export NVM_DIR=$HOME/.nvm-builds
+export NVM_DIR=$HOME/.nvm
 export WORKON_HOME=/usr/local/var/virtualenv
 
 export PATH=/usr/local/apache2/bin:$PATH
@@ -20,6 +20,9 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
 export EDITOR=vim
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR=nvim
+fi
 
 alias e=$EDITOR
 alias ..="cd .."
@@ -58,7 +61,7 @@ export PIP_RESPECT_VIRTUALENV=true
 # }
 
 __hg_ps1() {
-  if [ -x "$(which hg)" ]; then
+  if command -v hg >/dev/null 2>&1; then
     hg branch 2> /dev/null | awk '{printf "(%s)", $1}'
   fi
 }

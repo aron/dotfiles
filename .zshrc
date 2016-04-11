@@ -80,7 +80,11 @@ precmd() {
   vcs_info
 }
 
-PROMPT='%{$fg[yellow]%}%m%{$reset_color%}%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
+PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
 RPROMPT=""
+
+if [ "$SSH_CONNECTION" != "" ]; then
+  PROMPT='%{$fg[yellow]%}%m%{$reset_color%}'$PROMPT
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
