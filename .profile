@@ -21,8 +21,6 @@ export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
 
 export EDITOR=vim
 
-[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm  # This loads RVM into a shell session.
-
 alias e=$EDITOR
 alias ..="cd .."
 
@@ -51,13 +49,13 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS="--no-site-packages"
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
 
-VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
-[ -e $VIRTUALENV_WRAPPER ] && source $VIRTUALENV_WRAPPER
+# VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
+# [ -e $VIRTUALENV_WRAPPER ] && source $VIRTUALENV_WRAPPER
 
 # https://github.com/sstephenson/rbenv
-rbenvinit () {
-  [ -e "$(which less)" ] && eval "$(rbenv init - zsh)"
-}
+# rbenvinit () {
+#   [ -e "$(which less)" ] && eval "$(rbenv init - zsh)"
+# }
 
 __hg_ps1() {
   if [ -x "$(which hg)" ]; then
@@ -75,6 +73,11 @@ fi
 
 if [[ -f $NVM_DIR/nvm.sh ]]; then
   source $NVM_DIR/nvm.sh
+fi
+
+NVM_COMPLETION=$HOME/.nvm/bash_completion
+if [[ -f "$NVM_COMPLETION" ]]; then
+  source "$NVM_COMPLETION"
 fi
 
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
