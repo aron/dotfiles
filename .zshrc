@@ -1,14 +1,13 @@
-source ~/.profile
-
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 
 autoload colors && colors
 autoload -Uz vcs_info
 autoload -Uz compinit && compinit -i
-#autoload -U complist
+autoload -U complist
+
+source ~/.profile
 
 set -o emacs
-unsetopt nomatch
 
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
@@ -39,17 +38,6 @@ source "$HOME/.zsh/completion.zsh"
 source "$HOME/.zsh/history.zsh"
 source "$HOME/.zsh/directory.zsh"
 source "$HOME/.zsh/history-substring-search.zsh"
-
-# Source rbenv completion.
-# RBENV_COMPLETION=$(brew info rbenv | grep '*' | cut -d\  -f1)/completions/rbenv.zsh
-# if [ -f "$RBENV_COMPLETION" ]; then
-#   source "$RBENV_COMPLETION"
-# fi
-
-NVM_COMPLETION=$HOME/.nvm/bash_completion
-if [[ -f "$NVM_COMPLETION" ]]; then
-  source "$NVM_COMPLETION"
-fi
 
 zstyle ':vcs_info:*'  enable git hg svn
 zstyle ':vcs_info:*'  check-for-changes true
@@ -94,15 +82,5 @@ precmd() {
 
 PROMPT='%{$fg[yellow]%}%m%{$reset_color%}%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
 RPROMPT=""
-
-# Compile the completion dump, to increase startup speed.
-dump_file="$HOME/.zsh/compdump.tmp"
-touch $dump_file
-if [[ "$dump_file" -nt "${dump_file}.zwc" || ! -f "${dump_file}.zwc" ]]; then
-  zcompile "$dump_file"
-fi
-unset dump_file
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
