@@ -1,4 +1,9 @@
 #!/bin/sh
 
 cd $(git rev-parse --show-toplevel)
-${EDITOR:-vim} -p $(git diff --name-only --diff-filter=U)
+CONFLICTS=$(git diff --name-only --diff-filter=U)
+if [[ "$CONFLICTS" != "" ]]; then
+  ${EDITOR:-vim} -p $CONFLICTS
+else
+  echo "No conflicts to fix..."
+fi
