@@ -8,6 +8,7 @@ Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'kchmck/vim-coffee-script', {'for': 'coffee'}
+Plug 'keith/swift.vim'
 Plug 'kergoth/vim-hilinks', {'on': 'HLT'}
 Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
 Plug 'mtscout6/vim-cjsx', {'for': 'coffee'}
@@ -15,12 +16,8 @@ Plug 'othree/yajs.vim', {'for': 'javascript,typescript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
 Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
 Plug 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
-Plug 'scrooloose/syntastic'
-Plug 'Shougo/vimproc.vim', {'do': 'make'}
-Plug 'solarnz/arcanist.vim'
 Plug 'thinca/vim-textobj-function-javascript', {'for': 'javascript,typescript'}
 Plug 'tomtom/tcomment_vim'
-Plug 'benekastah/neomake'
 Plug 'tpope/vim-eunuch'   " Unix file commands
 Plug 'tpope/vim-fugitive' " Git commands
 Plug 'tpope/vim-git'      " Git syntax
@@ -29,8 +26,9 @@ Plug 'tpope/vim-repeat'   " Improved repeat to support surround.
 Plug 'tpope/vim-rsi'      " Readline insertion
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired' " Keyboard navigation mappings
-Plug 'vim-scripts/ag.vim'
+Plug 'vim-scripts/ag.vim' " Better than grep
 Plug 'vim-scripts/matchparenpp'
+Plug 'w0rp/ale'           " Static analysis and linting.
 Plug 'wellle/targets.vim'
 
 call plug#end()
@@ -39,7 +37,6 @@ set t_Co=256
 if &encoding != 'utf-8'
   set encoding=utf-8
 endif
-" set shellpipe=> " do not pipe commands such as Ack to stdout.
 
 syntax on
 
@@ -48,7 +45,7 @@ set background=dark
 hi Normal ctermbg=NONE
 hi NonText ctermfg=black
 hi SpecialKey ctermfg=black
-hi SpellBad cterm=underline ctermfg=9 guifg=#df7588 gui=underline
+hi SpellBad cterm=underline ctermfg=9 ctermbg=NONE guifg=#df7588 gui=underline
 hi ColorColumn ctermbg=234 ctermfg=NONE guifg=#1c1c1c
 hi SignColumn ctermbg=NONE
 hi MatchParen cterm=reverse
@@ -115,8 +112,21 @@ set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
 set statusline+=\ %{strlen(&ft)?&ft:'none'}
 set statusline+=\ %(\ %r%m%w%)
 set statusline+=%=
-set statusline+=%{exists('g:syntastic_exists')?SyntasticStatuslineFlag():''}
+set statusline+=%{exists('g:loaded_ale')?LinterStatus():''}
 set statusline+=%p%%
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? '' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
 
 " to display a variable-length file path according the width of the
 " current window
@@ -155,15 +165,6 @@ cnoreabbrev Wq wq
 
 " Mouse
 set mouse=a
-if exists('$TMUX')  " Support resizing in tmux
-  " set ttymouse=xterm2
-
-  " Remap keys for tmux. Disabled while using iterm.
-  " map <Esc>[A <Up>
-  " map <Esc>[B <Down>
-  " map <Esc>[C <Right>
-  " map <Esc>[D <Left>
-endif
 
 " No vi compatibility
 set nocompatible
@@ -182,6 +183,7 @@ set scrolloff=3
 
 " Disable swap files
 set dir=~/.vim/swap
+set noswapfile
 set undodir=~/.vim/undo
 set undofile
 set hidden
@@ -296,12 +298,6 @@ let g:gist_private = 1
 
 let g:markdown_fenced_languages = ['html', 'css', 'scss', 'javascript', 'coffee', 'typescript', 'python', 'bash=sh']
 
-let g:syntastic_javascript_checkers=["jshint", 'jscs']
-" let g:syntastic_javascript_jshint_args = '--config ~/.jshintrc'
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'ruby'], 'passive_filetypes': ['html', 'scss', 'go'] }
-let g:syntastic_always_populate_loc_list = 1
-
 function! ImprovedNERDTreeToggle()
   if exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1
     :NERDTreeToggle
@@ -338,3 +334,7 @@ let macvim_skip_colorscheme=1
 
 let g:fzf_command_prefix = 'FZF'
 nmap <C-p> :FZFFiles<cr>
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
