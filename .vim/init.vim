@@ -14,8 +14,11 @@ Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
 Plug 'mtscout6/vim-cjsx', {'for': 'coffee'}
 Plug 'othree/yajs.vim', {'for': 'javascript,typescript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
-Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
+" Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
 Plug 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
+Plug 'solarnz/arcanist.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'thinca/vim-textobj-function-javascript', {'for': 'javascript,typescript'}
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-eunuch'   " Unix file commands
@@ -335,6 +338,36 @@ let macvim_skip_colorscheme=1
 let g:fzf_command_prefix = 'FZF'
 nmap <C-p> :FZFFiles<cr>
 
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+if !has('gui_macvim')
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+else
+  set guifont=SF\ Mono\ Regular:h14
+endif
+
+if executable('typescript-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript'],
+        \ })
+endif
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vim-lsp.log')
+
+let g:lsp_signs_enabled = 1         " enable signs
+" let g:lsp_diagnostics_echo_cursor = 1
+
+function! Wrap()
+  setlocal wrap linebreak nolist showbreak=… columns=100
+  noremap <buffer> <silent> k gk
+  noremap <buffer> <silent> j gj
+  noremap <buffer> <silent> <Up> gj
+  noremap <buffer> <silent> <Down> gj
+endfunction
+
+command! -nargs=* Wrap call Wrap()
+

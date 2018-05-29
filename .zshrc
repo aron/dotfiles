@@ -1,7 +1,7 @@
-fpath=(/usr/local/share/zsh/site-functions $fpath)
+fpath=(~/.homebrew/bin/share/zsh/site-functions $fpath)
 
 autoload colors && colors
-autoload -Uz vcs_info
+# autoload -Uz vcs_info
 autoload -Uz compinit && compinit -i
 autoload -U complist
 
@@ -46,7 +46,7 @@ zstyle ':vcs_info:*'  unstagedstr   "*"
 zstyle ':vcs_info:*'  actionformats "%b|%a"
 zstyle ':vcs_info:*'  formats       "(%b%c%u%m) "
 zstyle ':vcs_info:*'  nvcsformats   ""
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-stash git-branch
+# zstyle ':vcs_info:git*+set-message:*' should-check-for-changes hooks git-untracked git-stash git-branch
 
 # Add a space between branch and state flag.
 function +vi-git-branch() {
@@ -76,15 +76,38 @@ function +vi-git-stash() {
   fi
 }
 
-precmd() {
-  vcs_info
+function should-check-for-changes() {
+  local d
+  local -a cfc_dirs
+  blacklist_dirs=(
+    ${HOME}/src/xplat/*(/)
+  )
+
+  for d in ${blacklist_dirs}; do
+    d=${d%/##}
+    [[ $PWD == $d(|/*) ]] && return 1
+  done
+  return 0
 }
 
-PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
+precmd() {
+  # vcs_info
+}
+
+gitbranch() {
+  branch="$(git rev-parse --abbrev-ref HEAD 2&> /dev/null)"
+  if [[ "$branch" != "" ]]; then
+    echo "($branch) "
+  fi
+  echo ""
+}
+
+# PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
+PROMPT='%~ $(gitbranch)%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
 RPROMPT=""
 
 if [ "$SSH_CONNECTION" != "" ]; then
   PROMPT='%{$fg[yellow]%}%m%{$reset_color%}'$PROMPT
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -6,7 +6,7 @@ export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
-export PATH=$HOME/.homebrew/bin:$PATH
+export PATH=$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 
@@ -18,6 +18,8 @@ export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*:$HISTIGNORE"
+
+export FASTLANE_OPT_OUT_USAGE=1
 
 export EDITOR=vim
 if command -v nvim >/dev/null 2>&1; then
@@ -75,13 +77,13 @@ if [[ -f $HOME/.private ]]; then
 fi
 
 if [[ -f $NVM_DIR/nvm.sh ]]; then
-  source $NVM_DIR/nvm.sh
+  # source $NVM_DIR/nvm.sh
 fi
 
 NVM_COMPLETION=$HOME/.nvm/bash_completion
 if [[ -f "$NVM_COMPLETION" ]]; then
-  source "$NVM_COMPLETION"
+  # source "$NVM_COMPLETION"
 fi
 
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
