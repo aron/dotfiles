@@ -12,11 +12,13 @@ http://mxcl.github.io/homebrew/
 
 # Install git, zsh etc:
 
-    $ brew install vim neovim git zsh tmux fzf ag
+    $ brew install vim neovim git zsh tmux fzf ag ripgrep
 
 # Generate ssh keys:
 
     $ ssh-keygen -t rsa -C "your_email@example.com"
+    $ ssh-add -K ~/.ssh/id_rsa
+    $ echo -e "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
 
 Source: https://help.github.com/articles/generating-ssh-keys
 
@@ -33,8 +35,8 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
 
 # Make zsh the login shell:
 
-    $ sudo echo /usr/bin/local/zsh >> /etc/shells
-    $ chsh -s /usr/bin/local/zsh
+    $ sudo echo /usr/local/bin/zsh >> /etc/shells
+    $ chsh -s /usr/local/bin/zsh
 
 # Create links for vim and neovim.
 
@@ -49,6 +51,10 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
     $ neovim -c "PlugInstall"
 
 See: https://github.com/junegunn/vim-plug
+
+# Install SF Mono Font
+
+    $ open /Applications/Utilities/Terminal.app/Contents/Resources/Fonts/*.otf
 
 # Hide this Readme:
 
