@@ -13,6 +13,10 @@ http://mxcl.github.io/homebrew/
 # Install git, zsh etc:
 
     $ brew install vim neovim git zsh tmux fzf ag ripgrep
+    
+# Install apps
+
+    $ brew cask install iterm2 visual-studio-code google-chrome
 
 # Generate ssh keys:
 
@@ -48,7 +52,7 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
 
     $ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    $ neovim -c "PlugInstall"
+    $ nvim -c "PlugInstall"
 
 See: https://github.com/junegunn/vim-plug
 
