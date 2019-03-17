@@ -17,8 +17,8 @@ Plug 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
 " Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
 Plug 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
 Plug 'solarnz/arcanist.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
 Plug 'thinca/vim-textobj-function-javascript', {'for': 'javascript,typescript'}
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-eunuch'   " Unix file commands
@@ -30,11 +30,13 @@ Plug 'tpope/vim-rsi'      " Readline insertion
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired' " Keyboard navigation mappings
 Plug 'vim-scripts/ag.vim' " Better than grep
-Plug 'vim-scripts/matchparenpp'
-Plug 'w0rp/ale'           " Static analysis and linting.
+" Plug 'vim-scripts/matchparenpp'
+" Plug 'w0rp/ale'           " Static analysis and linting.
 Plug 'wellle/targets.vim'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 call plug#end()
+
 
 set t_Co=256
 if &encoding != 'utf-8'
@@ -371,3 +373,4 @@ endfunction
 
 command! -nargs=* Wrap call Wrap()
 
+source ~/.vim/coc.vim
