@@ -77,12 +77,12 @@ if [[ -f $HOME/.private ]]; then
 fi
 
 if [[ -f $NVM_DIR/nvm.sh ]]; then
-  # source $NVM_DIR/nvm.sh
+  source $NVM_DIR/nvm.sh
 fi
 
 NVM_COMPLETION=$HOME/.nvm/bash_completion
 if [[ -f "$NVM_COMPLETION" ]]; then
-  # source "$NVM_COMPLETION"
+  source "$NVM_COMPLETION"
 fi
 
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
