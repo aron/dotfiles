@@ -2,23 +2,23 @@ call plug#begin('~/.vim/bundle')
 
 Plug 'cakebaker/scss-syntax.vim', {'for': 'scss'}
 Plug 'cloudhead/shady.vim'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'fatih/vim-go'
 Plug 'hail2u/vim-css3-syntax', {'for': 'css,scss'}
 Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'jxnblk/vim-mdx-js', {'for': 'mdx'}
 Plug 'kchmck/vim-coffee-script', {'for': 'coffee'}
 Plug 'keith/swift.vim'
 Plug 'kergoth/vim-hilinks', {'on': 'HLT'}
 Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
 Plug 'mtscout6/vim-cjsx', {'for': 'coffee'}
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'othree/yajs.vim', {'for': 'javascript,typescript'}
 Plug 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
-" Plug 'Quramy/tsuquyomi', {'for': 'typescript'}
 Plug 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
 Plug 'solarnz/arcanist.vim'
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
 Plug 'thinca/vim-textobj-function-javascript', {'for': 'javascript,typescript'}
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-eunuch'   " Unix file commands
@@ -30,10 +30,8 @@ Plug 'tpope/vim-rsi'      " Readline insertion
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired' " Keyboard navigation mappings
 Plug 'vim-scripts/ag.vim' " Better than grep
-" Plug 'vim-scripts/matchparenpp'
-" Plug 'w0rp/ale'           " Static analysis and linting.
 Plug 'wellle/targets.vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'wellle/targets.vim'
 
 call plug#end()
 

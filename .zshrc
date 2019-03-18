@@ -1,7 +1,7 @@
 fpath=(~/.homebrew/bin/share/zsh/site-functions $fpath)
 
 autoload colors && colors
-# autoload -Uz vcs_info
+autoload -Uz vcs_info
 autoload -Uz compinit && compinit -i
 autoload -U complist
 
@@ -46,7 +46,7 @@ zstyle ':vcs_info:*'  unstagedstr   "*"
 zstyle ':vcs_info:*'  actionformats "%b|%a"
 zstyle ':vcs_info:*'  formats       "(%b%c%u%m) "
 zstyle ':vcs_info:*'  nvcsformats   ""
-# zstyle ':vcs_info:git*+set-message:*' should-check-for-changes hooks git-untracked git-stash git-branch
+zstyle ':vcs_info:git*+set-message:*' should-check-for-changes hooks git-untracked git-stash git-branch
 
 # Add a space between branch and state flag.
 function +vi-git-branch() {
@@ -91,7 +91,7 @@ function should-check-for-changes() {
 }
 
 precmd() {
-  # vcs_info
+  vcs_info
 }
 
 gitbranch() {
@@ -110,4 +110,4 @@ if [ "$SSH_CONNECTION" != "" ]; then
   PROMPT='%{$fg[yellow]%}%m%{$reset_color%}'$PROMPT
 fi
 
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
