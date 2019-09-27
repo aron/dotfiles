@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+force=0
+
+for branch in $(git for-each-ref --format="%(refname:short)" refs/heads/$1); do
+  test $branch == "master" && continue
+
+  if [[ $force -eq 1 ]]; then
+    git branch -D $branch
+    continue
+  fi
+
+  read -n 1 -p "Delete $branch? [y/N/q/a]: " sure
+  echo
+  case "$sure" in
+    [yY]) git branch -D $branch;;
+    [qQ]) exit;;
+    [aA]) force=1;;
+  esac
+done
