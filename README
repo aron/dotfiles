@@ -13,7 +13,7 @@ http://mxcl.github.io/homebrew/
 # Install git, zsh etc:
 
     $ brew install vim neovim git zsh tmux fzf ag ripgrep
-    
+
 # Install apps
 
     $ brew cask install iterm2 visual-studio-code google-chrome
@@ -48,13 +48,15 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
     $ mkdir $HOME/.config
     $ ln -s $HOME/.vim $HOME/.config/nvim
 
-# Install vim-plug package manager
+# Install plugpac.vim package manager
 
-    $ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    $ nvim -c "PlugInstall"
+    $ git clone https://github.com/k-takata/minpac.git \
+          ~/.vim/pack/minpac/opt/minpac
+    $ curl -fLo ~/.vim/autoload/plugpac.vim --create-dirs \
+          https://raw.githubusercontent.com/bennyyip/plugpac.vim/master/plugpac.vim
+    $ nvim -c "PackInstall"
 
-See: https://github.com/junegunn/vim-plug
+See: https://github.com/bennyyip/plugpac.vim
 
 # Install SF Mono Font
 
