@@ -1,13 +1,20 @@
 -- https://github.com/neovim/nvim-lsp
 local on_attach_vim = function()
+  -- https://github.com/nvim-lua/completion-nvim
   require'completion'.on_attach()
+  -- https://github.com/nvim-lua/diagnostic-nvim
   require'diagnostic'.on_attach()
 end
 
 require'nvim_lsp'.tsserver.setup{ on_attach=on_attach_vim }
 require'nvim_lsp'.sumneko_lua.setup{ on_attach=on_attach_vim }
 require'nvim_lsp'.vimls.setup{ on_attach=on_attach_vim }
+require'nvim_lsp'.gopls.setup{
+  on_attach=on_attach_vim,
+  cmd = { "/Users/Aron/go/bin/gopls" },
+}
 
+-- https://github.com/nvim-treesitter/nvim-treesitter
 require'nvim-treesitter.configs'.setup {
     highlight = {
       enable = true,                    -- false will disable the whole extension
@@ -29,7 +36,7 @@ require'nvim-treesitter.configs'.setup {
         enable = true
       },
       highlight_current_scope = {
-        enable = true
+        enable = false
       },
       smart_rename = {
         enable = true,
@@ -73,6 +80,16 @@ require'nvim-treesitter.configs'.setup {
         ["im"] = "@call.inner"
       }
     },
-    ensure_installed = {"javascript", "typescript", "lua"}
+    ensure_installed = {"javascript", "typescript", "lua", "go"}
 }
+
+-- https://github.com/RishabhRD/nvim-lsputils
+vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.callbacks['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.callbacks['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.callbacks['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.callbacks['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.callbacks['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.callbacks['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.callbacks['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
 

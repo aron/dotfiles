@@ -2,6 +2,7 @@ call plugpac#begin()
 
 Pack 'cakebaker/scss-syntax.vim', {'for': 'scss'}
 Pack 'cloudhead/shady.vim'
+Pack 'dense-analysis/ale'
 Pack 'editorconfig/editorconfig-vim'
 Pack 'fatih/vim-go'
 Pack 'hail2u/vim-css3-syntax', {'for': 'css,scss'}
@@ -12,13 +13,10 @@ Pack 'jxnblk/vim-mdx-js', {'for': 'mdx'}
 Pack 'keith/swift.vim'
 Pack 'kergoth/vim-hilinks', {'on': 'HLT'}
 Pack 'leafgarland/typescript-vim', {'for': 'typescript'}
-Pack 'neovim/nvim-lsp', {'type': 'opt'}
-Pack 'nvim-lua/completion-nvim', {'type': 'opt'}
-Pack 'nvim-lua/diagnostic-nvim', {'type': 'opt'}
-Pack 'nvim-treesitter/nvim-treesitter', {'type': 'opt'}
 Pack 'othree/yajs.vim', {'for': 'javascript,typescript'}
 Pack 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
 Pack 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
+Pack 'sheerun/vim-polyglot'
 Pack 'solarnz/arcanist.vim'
 Pack 'tomtom/tcomment_vim'
 Pack 'tpope/vim-eunuch'   " Unix file commands
@@ -31,7 +29,14 @@ Pack 'tpope/vim-surround'
 Pack 'tpope/vim-unimpaired' " Keyboard navigation mappings
 Pack 'vim-scripts/ag.vim' " Better than grep
 Pack 'wellle/targets.vim'
-" Pack 'ncm2/float-preview.nvim'
+
+" Neovim Plugins
+Pack 'nvim-treesitter/nvim-treesitter', {'type': 'opt'}
+Pack 'nvim-lua/diagnostic-nvim', {'type': 'opt'}
+Pack 'nvim-lua/completion-nvim', {'type': 'opt'}
+Pack 'neovim/nvim-lsp', {'type': 'opt'}
+Pack 'RishabhRD/popfix'
+Pack 'RishabhRD/nvim-lsputils'
 
 call plugpac#end()
 
@@ -39,22 +44,44 @@ set t_Co=256
 if &encoding != 'utf-8'
   set encoding=utf-8
 endif
-
+let g:polyglot_disabled = ['go.plugin']
 syntax on
 
-silent! colorscheme shady
-set background=dark
-hi Normal ctermbg=NONE
-hi NonText ctermfg=black
-hi SpecialKey ctermfg=black
-hi SpellBad cterm=underline ctermfg=9 ctermbg=NONE guifg=#df7588 gui=underline
-hi ColorColumn ctermbg=234 ctermfg=NONE guifg=#1c1c1c
-hi SignColumn ctermbg=NONE
-hi MatchParen cterm=reverse
-hi diffAdded cterm=bold ctermfg=2 guifg=#fe2a66
-hi clear User1 " Used in the status line.
-hi gitcommitOverflow ctermfg=red
-
+silent! colorscheme moonfly
+" silent! colorscheme shady
+" set background=dark
+" hi Normal ctermbg=NONE
+" hi NonText ctermfg=black
+" hi SpecialKey ctermfg=black
+" hi SpellBad cterm=underline ctermfg=9 ctermbg=NONE guifg=#df7588 gui=underline
+" hi ColorColumn ctermbg=234 ctermfg=NONE guifg=#1c1c1c
+" hi SignColumn ctermbg=NONE
+" hi MatchParen cterm=reverse
+" hi diffAdded cterm=bold ctermfg=2 guifg=#fe2a66
+" hi clear User1 " Used in the status line.
+" hi gitcommitOverflow ctermfg=red
+"
+" " Neovim Treesitter
+" highlight TSAnnotation      ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSConstant        ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSConstBuiltin    ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSConstMacro      ctermfg=white         ctermbg=NONE       cterm=NONE
+" " Constructors
+" highlight TSConstructor     ctermfg=white         ctermbg=NONE       cterm=NONE
+" " Errors
+" highlight TSError           ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSFuncBuiltin     ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSFuncMacro       ctermfg=white         ctermbg=NONE       cterm=NONE
+" " import
+" highlight TSInclude         ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSKeywordOperator ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSParameter       ctermfg=white         ctermbg=NONE       cterm=NONE
+" " String Interpolation
+" highlight TSPunctSpecial    ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSTag             ctermfg=white         ctermbg=NONE       cterm=NONE
+" highlight TSTagDelimiter    ctermfg=white         ctermbg=NONE       cterm=NONE
+" " Console
+" highlight TSVariableBuiltin ctermfg=white         ctermbg=NONE       cterm=NONE
 
 augroup color_scheme
   au!
@@ -62,11 +89,6 @@ augroup color_scheme
   " now set it up to change the status line based on mode
   au InsertEnter * hi StatusLine cterm=bold ctermbg=None ctermfg=white
   au InsertLeave * hi StatusLine cterm=bold ctermbg=None ctermfg=black
-augroup END
-
-augroup javascript
-  au!
-  autocmd FileType javascript abbr puts console.log
 augroup END
 
 " http://stackoverflow.com/questions/4292733/vim-creating-parent-directories-on-save
@@ -114,21 +136,7 @@ set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
 set statusline+=\ %{strlen(&ft)?&ft:'none'}
 set statusline+=\ %(\ %r%m%w%)
 set statusline+=%=
-set statusline+=%{exists('g:loaded_ale')?LinterStatus():''}
 set statusline+=%p%%
-
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? '' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
 
 " to display a variable-length file path according the width of the
 " current window
@@ -337,14 +345,13 @@ endif
 " https://github.com/ncm2/float-preview.nvim
 let g:float_preview#docked=0
 
-let macvim_skip_colorscheme=1
-
 nmap <C-p> :Files<cr>
 
 if !has('gui_macvim')
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_SR = "\<Esc>]50;CursorShape=2\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  let macvim_skip_colorscheme=1
 else
   set guifont=SF\ Mono\ Regular:h14
 endif
@@ -370,7 +377,13 @@ if has("nvim")
     luafile ~/.vim/init.lua
   endif
 
+  set signcolumn=yes
   set updatetime=300
+
+  let g:diagnostic_insert_delay = 1
+  let g:diagnostic_enable_underline = 1
+  let g:diagnostic_enable_virtual_text = 1
+  let g:space_before_virtual_text = 5
 
   function! s:show_documentation()
     if &previewwindow " don't do this in the preview window
@@ -401,6 +414,8 @@ if has("nvim")
   nnoremap <silent> <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
   vnoremap <silent> <leader>f  <cmd>lua vim.lsp.buf.range_formatting()<CR>
   nnoremap <silent> <leader>f  <cmd>lua vim.lsp.buf.formatting()<CR>
+  nnoremap <silent> <C-LeftMouse> <LeftMouse><cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> <M-LeftMouse> <LeftMouse><cmd>lua vim.lsp.buf.definition()<CR>
 
   " Use <Tab> and <S-Tab> to navigate through popup menu
   inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -431,11 +446,20 @@ if has("nvim")
   augroup lsp_mappings
     autocmd!
     " Highlight symbol under cursor on CursorHold
-    " autocmd CursorHold <buffer> call <SID>show_documentation()
+    autocmd CursorHold  <buffer> call <SID>show_documentation()
     autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    autocmd BufWritePre <buffer> lua pcall(vim.lsp.buf.formatting_sync, nil, 1000)
-    autocmd Filetype    javascript,typescript,lua,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd Filetype    javascript,typescript,typescriptreact,javascriptreact,lua,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    " Disabled for the moment so it doesn't conflict with ALE
+    " autocmd BufWritePre <buffer> lua pcall(vim.lsp.buf.formatting_sync, nil, 1000)
   augroup END
 endif
 
+let g:moonflyUnderlineMatchParen = 1
+let g:moonflyCursorColor = 1
+
+let g:ale_linters_explicit = 1
+let g:ale_disable_lsp = 1
+let g:ale_fix_on_save = 1
+let g:ale_linters = { 'javascript': ['eslint'] }
+let g:ale_fixers  = { 'javascript': ['prettier', 'eslint'] }
