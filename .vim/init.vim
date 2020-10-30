@@ -1,10 +1,11 @@
 call plugpac#begin()
 
+Pack 'bluz71/vim-moonfly-colors'
 Pack 'cakebaker/scss-syntax.vim', {'for': 'scss'}
 Pack 'cloudhead/shady.vim'
 Pack 'dense-analysis/ale'
 Pack 'editorconfig/editorconfig-vim'
-Pack 'fatih/vim-go'
+" Pack 'fatih/vim-go'
 Pack 'hail2u/vim-css3-syntax', {'for': 'css,scss'}
 Pack 'hynek/vim-python-pep8-indent', {'for': 'python'}
 Pack 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -16,7 +17,6 @@ Pack 'leafgarland/typescript-vim', {'for': 'typescript'}
 Pack 'othree/yajs.vim', {'for': 'javascript,typescript'}
 Pack 'pangloss/vim-javascript', {'for': 'javascript,typescript'}
 Pack 'scrooloose/nerdtree', {'on': 'ImprovedNERDTreeToggle'}
-Pack 'sheerun/vim-polyglot'
 Pack 'solarnz/arcanist.vim'
 Pack 'tomtom/tcomment_vim'
 Pack 'tpope/vim-eunuch'   " Unix file commands
@@ -32,11 +32,12 @@ Pack 'wellle/targets.vim'
 
 " Neovim Plugins
 Pack 'nvim-treesitter/nvim-treesitter', {'type': 'opt'}
-Pack 'nvim-lua/diagnostic-nvim', {'type': 'opt'}
-Pack 'nvim-lua/completion-nvim', {'type': 'opt'}
+Pack 'RishabhRD/nvim-lsputils', { 'type': 'opt' }
+Pack 'RishabhRD/popfix', { 'type': 'opt' }
 Pack 'neovim/nvim-lsp', {'type': 'opt'}
-Pack 'RishabhRD/popfix'
-Pack 'RishabhRD/nvim-lsputils'
+Pack 'nvim-lua/completion-nvim', {'type': 'opt'}
+Pack 'nvim-lua/diagnostic-nvim', {'type': 'opt'}
+Pack 'nvim-lua/lsp-status.nvim', {'type': 'opt'}
 
 call plugpac#end()
 
@@ -106,9 +107,17 @@ augroup ensure_directory
   au BufWritePre * :call s:EnsureDirectory(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
+function! LspStatus() abort
+  if luaeval('vim.lsp and #vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
 function! GitStatusLine()
   let ret = fugitive#statusline()
-  let ret = substitute(ret, '\c\v\[?GIT\(([a-z0-9\-_\./:]+)\)\]?', nr2char(0x2b60) .' \1', 'g')
+  let ret = substitute(ret, '\c\v\[?GIT\(([a-z0-9\-_\./:]+)\)\]?', '↪︎' .' \1', 'g')
   return ret
 endfunction
 
@@ -136,7 +145,8 @@ set statusline+=\ %{exists('g:loaded_fugitive')?GitStatusLine():''}
 set statusline+=\ %{strlen(&ft)?&ft:'none'}
 set statusline+=\ %(\ %r%m%w%)
 set statusline+=%=
-set statusline+=%p%%
+set statusline+=%{LspStatus()}
+set statusline+=\ %p%%
 
 " to display a variable-length file path according the width of the
 " current window
@@ -371,6 +381,9 @@ if has("nvim")
   packadd diagnostic-nvim
   packadd completion-nvim
   packadd nvim-treesitter
+  packadd lsp-status.nvim
+  packadd popfix
+  packadd nvim-lsputils
 
   if exists(':luafile')
     packloadall
@@ -446,14 +459,18 @@ if has("nvim")
   augroup lsp_mappings
     autocmd!
     " Highlight symbol under cursor on CursorHold
-    autocmd CursorHold  <buffer> call <SID>show_documentation()
-    autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    autocmd Filetype    javascript,typescript,typescriptreact,javascriptreact,lua,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    " autocmd CursorHold  <buffer> call <SID>show_documentation()
+    " autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
+    " autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    " autocmd Filetype    javascript,typescript,typescriptreact,javascriptreact,lua,vim setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Disabled for the moment so it doesn't conflict with ALE
     " autocmd BufWritePre <buffer> lua pcall(vim.lsp.buf.formatting_sync, nil, 1000)
   augroup END
 endif
+
+let g:go_gopls_enabled = 0
+let g:go_jump_to_error = 0
+let g:go_def_mapping_enabled = 0
 
 let g:moonflyUnderlineMatchParen = 1
 let g:moonflyCursorColor = 1
@@ -461,5 +478,3 @@ let g:moonflyCursorColor = 1
 let g:ale_linters_explicit = 1
 let g:ale_disable_lsp = 1
 let g:ale_fix_on_save = 1
-let g:ale_linters = { 'javascript': ['eslint'] }
-let g:ale_fixers  = { 'javascript': ['prettier', 'eslint'] }
