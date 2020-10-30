@@ -5,10 +5,13 @@ export WORKON_HOME=/usr/local/var/virtualenv
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
+
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
 export PATH=$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH=$HOME/.bin:$PATH
+
+export GOPATH=$HOME/Code/go
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
@@ -76,9 +79,24 @@ if [[ -f $HOME/.private ]]; then
   source $HOME/.private
 fi
 
-if [[ -f $NVM_DIR/nvm.sh ]]; then
-  source $NVM_DIR/nvm.sh
-fi
+nvm(){
+  unfunction nvm
+  if [[ -f $NVM_DIR/nvm.sh ]]; then
+    source $NVM_DIR/nvm.sh
+  fi
+  nvm "$@"
+}
+
+node(){
+  unfunction node
+  "$(nvm which node)" "$@"
+}
+
+npm(){
+  unfunction npm
+  nvm which node > /dev/null
+  npm "$@"
+}
 
 NVM_COMPLETION=$HOME/.nvm/bash_completion
 if [[ -f "$NVM_COMPLETION" ]]; then
