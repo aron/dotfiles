@@ -1,0 +1,122 @@
+#!/bin/bash
+
+set -euf -o pipefail
+
+function listparam {
+  local IFS=","; echo $(urlencode "$*");
+}
+
+# https://gist.github.com/cdown/1163649
+function urlencode {
+    # urlencode <string>
+
+    old_lc_collate=${LC_COLLATE:-}
+    LC_COLLATE=C
+
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:$i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf '%s' "$c" ;;
+            *) printf '%%%02X' "'$c" ;;
+        esac
+    done
+
+    LC_COLLATE=$old_lc_collate
+}
+
+function usage {
+  cat <<EOF
+Create a new Journal note in Bear
+
+Usage:
+  % journal <command> <...flags>
+
+Commands:
+  new           Create a new entry
+
+Flags:
+  -T, --title   The title of the note, defaults to the current date
+  -t, --tag     One or more tags to add to the note
+  -r, --stdin   Read note body from stdin
+
+EOF
+}
+
+if [[ "$#" -eq 0 ]]; then
+  usage
+  exit 1
+fi
+
+TITLE=""
+STDIN=0
+TAG_LIST=(journal)
+PARAMS=""
+
+# Process command
+case "$1" in
+  new)
+    shift
+    ;;
+  -h|--help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit
+    ;;
+esac
+
+# https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
+while (( "$#" )); do
+  case "$1" in
+    -h,--help)
+      usage
+      exit
+      ;;
+    -r|--stdin)
+      STDIN=1
+      shift
+      ;;
+    -t|--tag)
+      if [ -n "${2:-}" ] && [ ${2:0:1} != "-" ]; then
+        TAG_LIST+=("$2")
+        shift 2
+      else
+        echo "Error: Argument for $1 is missing" >&2
+        exit 1
+      fi
+      ;;
+    -T|--title)
+      if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+        TITLE="$2"
+        shift 2
+      else
+        echo "Error: Argument for $1 is missing" >&2
+        exit 1
+      fi
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done # set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+tags=${TAG_LIST[@]}
+date=${TITLE:-$(date '+%Y-%m-%d')}
+text=""
+
+if [[ $STDIN -eq 1 ]]; then
+  echo "Press Ctrl-D to finish..."
+  text=$(< /dev/stdin)
+fi
+
+open "bear://x-callback-url/create?title="$date"&tags=$(listparam $tags)&open_note=yes&pin=yes&edit=yes&text=$(urlencode "$text")"
