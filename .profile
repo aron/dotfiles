@@ -1,7 +1,10 @@
 export RBENV_ROOT=/usr/local/var/rbenv
 export NVM_DIR=$HOME/.nvm
+export VOLTA_HOME="$HOME/.volta"
 export WORKON_HOME=/usr/local/var/virtualenv
+export ASDF_DIR=$HOME/.asdf
 
+export PATH=$(brew --prefix)/opt/python/libexec/bin:$PATH
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
@@ -10,11 +13,16 @@ export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
 export PATH=$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH=$HOME/.bin:$PATH
+export PATH=$VOLTA_HOME/bin:$PATH
 
 export GOPATH=$HOME/Code/go
+export PATH=$PATH:$GOPATH/bin
 
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules:$NODE_PATH
 export NODE_PATH=/usr/local/lib/jsctags/:$NODE_PATH
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
@@ -57,14 +65,6 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS="--no-site-packages"
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
 
-# VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
-# [ -e $VIRTUALENV_WRAPPER ] && source $VIRTUALENV_WRAPPER
-
-# https://github.com/sstephenson/rbenv
-# rbenvinit () {
-#   [ -e "$(which less)" ] && eval "$(rbenv init - zsh)"
-# }
-
 __hg_ps1() {
   if command -v hg >/dev/null 2>&1; then
     hg branch 2> /dev/null | awk '{printf "(%s)", $1}'
@@ -75,13 +75,10 @@ if [[ $SHELL == "/bin/bash" ]]; then
   export PS1='\W/$(__git_ps1 "(%s)")$(__hg_ps1) % '
 fi
 
-if [[ -f $HOME/.private ]]; then
-  source $HOME/.private
+if [[ -f $(brew --prefix asdf)/asdf.sh ]]; then
+  source $(brew --prefix asdf)/asdf.sh
 fi
 
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-if command -v fnm >/dev/null 2>&1; then
-  eval "$(fnm env)"
+if [[ -f $HOME/.private ]]; then
+  source $HOME/.private
 fi
