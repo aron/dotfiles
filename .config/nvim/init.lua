@@ -359,8 +359,8 @@ end
 
 -- Statusline
 
--- to display a variable-length file path according the width of the
--- current window
+-- to display a variable-length file path according
+-- the width of the current window
 local function file_path()
     local tail = vim.fn.expand('%:p:t')
     if tail == "" then
@@ -379,7 +379,7 @@ local function file_path()
     return head .. tail
 end
 
-local function columnno()
+local function column_number()
   local vc = vim.fn.virtcol('.')
   local ruler_width = vim.fn.max({vim.fn.strlen(vim.fn.line('$')), (vim.opt.numberwidth:get() - 1)})
   local column_width = vim.fn.strlen(vc)
@@ -397,13 +397,27 @@ local function columnno()
   return column
 end
 
+local function statusline ()
+  local align_section = '%='
+  local percentage_through_file = '%p%%'
+  local filetype = vim.opt.filetype:get()
+  if filetype == "" then
+    filetype = "none"
+  end
+
+  return table.concat({
+    column_number(),
+    '%( %q%w%r%h%#StatusLineErr#%m%*%) ',
+    file_path(),
+    ' ',
+    filetype,
+    ' %( %r%m%w%)',
+    align_section,
+    ' ',
+    percentage_through_file,
+  })
+end
+
 vim.opt.laststatus = 2
-vim.opt.statusline = table.concat({
-  '%{Column()}',
-  '%( %q%w%r%h%#StatusLineErr#%m%*%) ',
-  file_path(),
-  ' %{strlen(&ft) ? &ft : "none"}',
-  ' %( %r%m%w%)',
-  '%=',
-  ' %p%%',
-})
+_G.statusline = statusline
+vim.cmd('set statusline=%!v:lua.statusline()')
