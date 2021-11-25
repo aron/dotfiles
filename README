@@ -12,7 +12,7 @@ http://mxcl.github.io/homebrew/
 
 # Install git, zsh etc:
 
-    $ brew install vim neovim git zsh tmux fzf ag ripgrep
+    $ brew install vim neovim git zsh tmux fzf ag ripgrep fnm
 
 # Install apps
 
