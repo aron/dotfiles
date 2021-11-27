@@ -210,7 +210,7 @@ augroup plugins
   autocmd!
   autocmd InsertEnter * :setlocal nohlsearch
   autocmd InsertLeave * :setlocal hlsearch
-  autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler
+  autocmd FileType gitcommit setlocal spell textwidth=72 formatoptions=cqt nonumber noruler
 augroup END
 
 if executable('rg')

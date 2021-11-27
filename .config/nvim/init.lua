@@ -148,7 +148,7 @@ vim.cmd('filetype plugin indent on')
 
 -- Git Commit Formatting
 augroup('gitcommit', {
-    { 'FileType', 'gitcommit', 'setlocal', 'textwidth=72 formatoptions=cqt nonumber noruler' },
+    { 'FileType', 'gitcommit', 'setlocal', 'spell textwidth=72 formatoptions=cqt nonumber noruler' },
 })
 
 -- Grep
