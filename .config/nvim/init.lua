@@ -14,14 +14,12 @@ vim.call('plugpac#begin')
 
 local packadd = vim.fn['plugpac#add']
 
+-- VimScript Plugins
 packadd('axelf4/vim-strip-trailing-whitespace')
 packadd('editorconfig/editorconfig-vim')
 packadd('junegunn/fzf', { ['dir'] = '~/.fzf', ['do'] = 'packadd fzf | call fzf#install()' })
 packadd('junegunn/fzf.vim')
-packadd('kdheepak/monochrome.nvim')
 packadd('kergoth/vim-hilinks', {['on'] = 'HLT'})
-packadd('neovim/nvim-lspconfig')
-packadd('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 packadd('solarnz/arcanist.vim')
 packadd('tomtom/tcomment_vim')
 packadd('tpope/vim-eunuch')     -- Unix file commands
@@ -35,9 +33,19 @@ packadd('tpope/vim-surround')
 packadd('tpope/vim-unimpaired') -- Keyboard navigation mappings
 packadd('vim-scripts/ag.vim')   -- Better than grep
 packadd('wellle/targets.vim')
-packadd('williamboman/nvim-lsp-installer')
+
+-- Lua Plugins
+packadd('neovim/nvim-lspconfig', { type = 'opt' })
+packadd('nvim-treesitter/nvim-treesitter', {type = 'opt', ['do'] = ':TSUpdate'})
+packadd('kdheepak/monochrome.nvim', { type = 'opt' })
+packadd('williamboman/nvim-lsp-installer', { type = 'opt' })
 
 vim.call('plugpac#end')
+
+vim.cmd('packadd nvim-lspconfig')
+vim.cmd('packadd nvim-treesitter')
+vim.cmd('packadd monochrome.nvim')
+vim.cmd('packadd nvim-lsp-installer')
 
 -- Color Scheme
 vim.cmd('silent! colorscheme monochrome')
@@ -320,22 +328,22 @@ end
 _G.lsp_imports_and_format = lsp_imports_and_format
 
 -- Go Linting
-local lspconfig = require('lspconfig')
-if not lspconfig.golangcilsp then
-  require('lspconfig/configs').golangcilsp = {
-    default_config = {
-      cmd = { 'golangci-lint-langserver' },
-      root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
-      init_options = {
-          command = { "golangci-lint", "run", "--out-format", "json" };
-      }
-    };
-  }
-end
-
-lspconfig.golangcilsp.setup({
-  filetypes = { "go" }
-})
+-- local lspconfig = require('lspconfig')
+-- if not lspconfig.golangcilsp then
+--   require('lspconfig/configs').golangcilsp = {
+--     default_config = {
+--       cmd = { 'golangci-lint-langserver' },
+--       root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
+--       init_options = {
+--           command = { "golangci-lint", "run", "--out-format", "json" };
+--       }
+--     };
+--   }
+-- end
+--
+-- lspconfig.golangcilsp.setup({
+--   filetypes = { "go" }
+-- })
 
 -- Print warnings
 local required_tools = {
