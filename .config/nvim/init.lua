@@ -27,6 +27,7 @@ packadd('tomtom/tcomment_vim')
 packadd('tpope/vim-eunuch')     -- Unix file commands
 packadd('tpope/vim-fugitive')   -- Git commands
 packadd('tpope/vim-git')        -- Git syntax
+packadd('tpope/vim-sleuth')     -- Detect indentation
 packadd('tpope/vim-ragtag')     -- HTML tag mappings
 packadd('tpope/vim-repeat')     -- Improved repeat to support surround.
 packadd('tpope/vim-rsi')        -- Readline insertion
@@ -82,7 +83,7 @@ vim.opt.wrap = false
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
-vim.opt.expandtab = true
+-- vim.opt.expandtab = true
 
 -- Split Window
 vim.opt.splitbelow = true
@@ -149,7 +150,7 @@ vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
 vim.api.nvim_set_keymap('n', '<C-p>', ':Files<cr>', {})
 
 -- TODO: Ensure Directory
-function ensure_dir(file, buf)
+local function ensure_dir(file, buf)
   if vim.fn.empty(vim.fn.getbufvar(file, '&buftype')) and not vim.regex('\\v^\\w+\\:\\/'):match_str(file) then
     local dir = vim.fn.fnamemodify(file, ':h')
     if not vim.fn.isdirectory(dir) then
@@ -157,6 +158,7 @@ function ensure_dir(file, buf)
     end
   end
 end
+_G.ensure_dir = ensure_dir
 
 augroup('ensure_directory', {
   { 'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))' },
@@ -211,41 +213,88 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  vim.cmd('autocmd BufWritePre *.go lua Lsp_imports_and_format(3000)')
+  vim.cmd('autocmd BufWritePre *.go lua lsp_imports_and_format(3000)')
+  vim.cmd('autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 3000)')
+  vim.cmd('autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 3000)')
 end
 
 -- https://github.com/williamboman/nvim-lsp-installer
-local lsp_installer = require('nvim-lsp-installer')
-lsp_installer.on_server_ready(function(server)
-  local opts = {
-    on_attach = on_attach,
-    flags = { debounce_text_changes = 150, },
-  }
-
-  if server.name == "sumneko_lua" then
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
-    opts.settings = {
-      Lua = {
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = {'vim'},
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file("", true),
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
-      },
+local lsp_servers = { 'tsserver', 'efm', 'gopls', 'sumneko_lua', }
+for _, name in pairs(lsp_servers) do
+  local function on_server_ready(server)
+    local opts = {
+      on_attach = on_attach,
+      flags = { debounce_text_changes = 150, },
     }
+
+    if server.name == "sumneko_lua" then
+      -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
+      opts.settings = {
+        Lua = {
+          diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = {'vim'},
+          },
+          workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = vim.api.nvim_get_runtime_file("", true),
+          },
+          -- Do not send telemetry data containing a randomized but unique identifier
+          telemetry = {
+            enable = false,
+          },
+        },
+      }
+    end
+
+    if server.name == "tsserver" then
+      opts.on_attach = function(client, bufno)
+        client.resolved_capabilities.document_formatting = false
+        on_attach(client, bufno)
+      end
+    end
+
+    if server.name == "efm" then
+      local cfg = {
+        {
+          formatCommand = "prettierd ${INPUT}",
+          rootMarkers = {'package.json'},
+          formatStdin = true,
+        },
+        {
+          lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
+          rootMarkers = {'package.json'},
+          lintIgnoreExitCode = true,
+          lintStdin = true,
+          lintFormats = {'%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m'},
+        },
+      }
+      opts.rootdir = vim.loop.cwd
+      opts.filetypes = { 'typescript', 'javascript' }
+      opts.init_options = { documentFormatting = true }
+      opts.settings = {
+        rootMarkers = { '.git' },
+        languages = {
+          typescript = cfg,
+          javascript = cfg,
+        },
+      }
+    end
+
+    -- This setup() function is exactly the same as lspconfig's setup function.
+    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    server:setup(opts)
   end
 
-  -- This setup() function is exactly the same as lspconfig's setup function.
-  -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-  server:setup(opts)
-end)
+  -- https://github.com/williamboman/nvim-lsp-installer/#setup
+  local server_available, requested_server = require('nvim-lsp-installer').get_server(name)
+  if server_available then
+    requested_server:on_ready(on_server_ready)
+    if not requested_server:is_installed() then
+      requested_server:install()
+    end
+  end
+end
 
 -- LSP Formatting
 local function lsp_imports(timeout_ms)
@@ -263,11 +312,12 @@ local function lsp_imports(timeout_ms)
   end
 end
 
-function Lsp_imports_and_format(timeout_ms)
+local function lsp_imports_and_format(timeout_ms)
   timeout_ms = timeout_ms or 1000
   lsp_imports(timeout_ms)
   vim.lsp.buf.formatting_sync(nil, timeout_ms)
 end
+_G.lsp_imports_and_format = lsp_imports_and_format
 
 -- Go Linting
 local lspconfig = require('lspconfig')
@@ -282,9 +332,22 @@ if not lspconfig.golangcilsp then
     };
   }
 end
+
 lspconfig.golangcilsp.setup({
   filetypes = { "go" }
 })
+
+-- Print warnings
+local required_tools = {
+  ['prettierd'] = 'npm install -g @fsouza/prettierd',
+  ['eslint_d'] = 'npm install -g eslint_d',
+  ['golangci-lint-langserver'] = 'go get github.com/nametake/golangci-lint-langserver',
+}
+for tool, instruction in pairs(required_tools) do
+  if vim.fn.executable(tool) ~= 1 then
+    print(string.format('Missing executable "%s" install with: %s', tool, instruction))
+  end
+end
 
 -- Statusline
 
@@ -325,7 +388,6 @@ local function columnno()
 
   return column
 end
-vim.cmd.Column = columnno
 
 vim.opt.laststatus = 2
 vim.opt.statusline = table.concat({
@@ -337,4 +399,3 @@ vim.opt.statusline = table.concat({
   '%=',
   ' %p%%',
 })
-

@@ -12,11 +12,11 @@ http://mxcl.github.io/homebrew/
 
 # Install git, zsh etc:
 
-    $ brew install vim neovim git zsh tmux fzf ag ripgrep fnm
+    $ brew install vim neovim git zsh tmux fzf ag ripgrep
 
 # Install apps
 
-    $ brew cask install iterm2 visual-studio-code google-chrome
+    $ brew install kitty vscodium firefox google-chrome
 
 # Generate ssh keys:
 
@@ -45,14 +45,12 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
 # Create links for vim and neovim.
 
     $ ln -s $HOME/.vim/init.vim $HOME/.vimrc
-    $ mkdir $HOME/.config
-    $ ln -s $HOME/.vim $HOME/.config/nvim
 
 # Install plugpac.vim package manager
 
     $ git clone https://github.com/k-takata/minpac.git \
-          ~/.vim/pack/minpac/opt/minpac
-    $ curl -fLo ~/.vim/autoload/plugpac.vim --create-dirs \
+          ~/.config/nvim/pack/minpac/opt/minpac
+    $ curl -fLo ~/.config/nvim/autoload/plugpac.vim --create-dirs \
           https://raw.githubusercontent.com/bennyyip/plugpac.vim/master/plugpac.vim
     $ nvim -c "PackInstall"
 
