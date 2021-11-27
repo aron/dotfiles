@@ -125,6 +125,7 @@ set colorcolumn=+1,120
 set formatoptions=cq
 try | set formatoptions+=j | catch | endtry
 set scrolloff=3
+set sidescrolloff=5
 
 " Disable swap files
 set dir=~/.vim/swap
@@ -146,15 +147,7 @@ set expandtab
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" Allow option enter to insert a newline.
-noremap <M-enter> <C-m><C-u>
-imap <D-≥> <C-_>
-
 map <leader>cc :cclose <bar> lclose <cr>
-
-map <leader>y "*y
-map <leader>x "*x
-map <leader>d "*d
 
 " Split windows
 set splitbelow
@@ -220,9 +213,9 @@ augroup plugins
   autocmd FileType gitcommit setlocal textwidth=72 formatoptions=cqt nonumber noruler
 augroup END
 
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+if executable('rg')
+  " Use rg over grep
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 endif
 
 if has('mouse_sgr')
