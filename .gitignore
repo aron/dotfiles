@@ -1,10 +1,5 @@
 *.pyc
 *.un~
-*.tmproj
 .DS_Store
 .vimrc
-.jshintrc
 .dropbox
-.tm_properties
-.ctags
-tags
