@@ -3,21 +3,23 @@ set runtimepath^=~/.config/nvim
 
 call plugpac#begin()
 
+Pack 'axelf4/vim-strip-trailing-whitespace'
 Pack 'cloudhead/shady.vim'
 Pack 'editorconfig/editorconfig-vim'
 Pack 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Pack 'junegunn/fzf.vim'
 Pack 'tomtom/tcomment_vim'
-Pack 'tpope/vim-eunuch'   " Unix file commands
-Pack 'tpope/vim-fugitive' " Git commands
-Pack 'tpope/vim-git'      " Git syntax
-Pack 'tpope/vim-ragtag'   " HTML tag mappings
-Pack 'tpope/vim-repeat'   " Improved repeat to support surround.
-Pack 'tpope/vim-rsi'      " Readline insertion
-Pack 'tpope/vim-sleuth'   " Detect whitespace
+Pack 'tpope/vim-eunuch'     " Unix file commands
+Pack 'tpope/vim-fugitive'   " Git commands
+Pack 'tpope/vim-git'        " Git syntax
+Pack 'tpope/vim-ragtag'     " HTML tag mappings
+Pack 'tpope/vim-repeat'     " Improved repeat to support surround.
+Pack 'tpope/vim-rsi'        " Readline insertion
+Pack 'tpope/vim-sleuth'     " Detect whitespace
 Pack 'tpope/vim-surround'
 Pack 'tpope/vim-unimpaired' " Keyboard navigation mappings
-Pack 'vim-scripts/ag.vim' " Better than grep
+Pack 'tpope/vim-vinegar'    " Netrw
+Pack 'vim-scripts/ag.vim'   " Better than grep
 
 call plugpac#end()
 

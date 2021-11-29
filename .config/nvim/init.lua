@@ -1,11 +1,11 @@
 -- Utilities
 local function augroup(name, autocmds)
-    vim.cmd('augroup ' .. name)
-    vim.cmd('autocmd!')
-    for _, autocmd in ipairs(autocmds) do
-        vim.cmd('autocmd ' .. table.concat(autocmd, ' '))
-    end
-    vim.cmd('augroup END')
+  vim.cmd('augroup ' .. name)
+  vim.cmd('autocmd!')
+  for _, autocmd in ipairs(autocmds) do
+    vim.cmd('autocmd ' .. table.concat(autocmd, ' '))
+  end
+  vim.cmd('augroup END')
 end
 
 -- Plugins
@@ -16,45 +16,58 @@ local packadd = vim.fn['plugpac#add']
 
 -- VimScript Plugins
 packadd('axelf4/vim-strip-trailing-whitespace')
+packadd('cloudhead/shady.vim')
 packadd('editorconfig/editorconfig-vim')
 packadd('junegunn/fzf', { ['dir'] = '~/.fzf', ['do'] = 'packadd fzf | call fzf#install()' })
 packadd('junegunn/fzf.vim')
-packadd('kergoth/vim-hilinks', {['on'] = 'HLT'})
-packadd('solarnz/arcanist.vim')
 packadd('tomtom/tcomment_vim')
-packadd('tpope/vim-eunuch')     -- Unix file commands
-packadd('tpope/vim-fugitive')   -- Git commands
-packadd('tpope/vim-git')        -- Git syntax
-packadd('tpope/vim-sleuth')     -- Detect indentation
-packadd('tpope/vim-ragtag')     -- HTML tag mappings
-packadd('tpope/vim-repeat')     -- Improved repeat to support surround.
-packadd('tpope/vim-rsi')        -- Readline insertion
+packadd('tpope/vim-eunuch') -- Unix file commands
+packadd('tpope/vim-fugitive') -- Git commands
+packadd('tpope/vim-git') -- Git syntax
+packadd('tpope/vim-ragtag') -- HTML tag mappings
+packadd('tpope/vim-repeat') -- Improved repeat to support surround.
+packadd('tpope/vim-rsi') -- Readline insertion
+packadd('tpope/vim-sleuth') -- Detect indentation
 packadd('tpope/vim-surround')
 packadd('tpope/vim-unimpaired') -- Keyboard navigation mappings
-packadd('vim-scripts/ag.vim')   -- Better than grep
-packadd('wellle/targets.vim')
+packadd('tpope/vim-vinegar') -- Netrw
+packadd('vim-scripts/ag.vim') -- Better than grep
 
 -- Lua Plugins
-packadd('neovim/nvim-lspconfig', { type = 'opt' })
-packadd('nvim-treesitter/nvim-treesitter', {type = 'opt', ['do'] = ':TSUpdate'})
-packadd('kdheepak/monochrome.nvim', { type = 'opt' })
-packadd('williamboman/nvim-lsp-installer', { type = 'opt' })
+local lua_plugins = {
+  ['hrsh7th/cmp-buffer'] = {},
+  ['hrsh7th/cmp-cmdline'] = {},
+  ['hrsh7th/cmp-nvim-lsp'] = {},
+  ['hrsh7th/cmp-path'] = {},
+  ['hrsh7th/cmp-vsnip'] = {},
+  ['hrsh7th/nvim-cmp'] = {},
+  ['hrsh7th/vim-vsnip'] = {},
+  ['kdheepak/monochrome.nvim'] = {},
+  ['neovim/nvim-lspconfig'] = {},
+  ['nvim-treesitter/nvim-treesitter'] = { ['do'] = ':TSUpdate' },
+  ['williamboman/nvim-lsp-installer'] = {},
+}
+for package, options in pairs(lua_plugins) do
+  packadd(package, vim.tbl_extend('force', { type = 'opt' }, options))
+end
 
 vim.call('plugpac#end')
 
-vim.cmd('packadd nvim-lspconfig')
-vim.cmd('packadd nvim-treesitter')
-vim.cmd('packadd monochrome.nvim')
-vim.cmd('packadd nvim-lsp-installer')
+-- Source all lua plugins
+for package, _ in pairs(lua_plugins) do
+  vim.cmd(string.format('packadd %s', vim.fn.fnamemodify(package, ':t')))
+end
 
 -- Color Scheme
 vim.cmd('silent! colorscheme monochrome')
+vim.cmd('hi clear NonText | hi link NonText Comment')
 
 -- Display
 vim.opt.number = true
 vim.opt.ruler = true
 vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 300
+vim.opt.mouse = 'a'
 
 augroup('color_scheme', {
   { 'InsertEnter', '*', 'hi StatusLine cterm=bold ctermbg=None ctermfg=white' },
@@ -74,9 +87,9 @@ vim.opt.sidescrolloff = 5
 vim.opt.showmode = false
 
 -- Disable swap files
-vim.opt.dir = '~/.vim/swap'
+vim.opt.dir = vim.fn.expand('~/.vim/swap')
 vim.opt.swapfile = false
-vim.opt.undodir = '~/.vim/undo'
+vim.opt.undodir = vim.fn.expand('~/.vim/undo')
 vim.opt.undofile = true
 vim.opt.hidden = true
 
@@ -106,14 +119,11 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.api.nvim_set_keymap('n', '<leader><space>', ':nohlsearch<cr>', {})
 
-augroup('plugins', {
-    { 'InsertEnter', '*', 'setlocal', 'nohlsearch' },
-    { 'InsertLeave', '*', 'setlocal', 'hlsearch' },
-})
+augroup('plugins', { { 'InsertEnter', '*', 'setlocal', 'nohlsearch' }, { 'InsertLeave', '*', 'setlocal', 'hlsearch' } })
 
 -- Expand %% to the current directory
-vim.cmd("cabbr <expr> %% expand('%:p:h')")
-vim.cmd("cabbr <expr> %f expand('%:t')")
+vim.cmd('cabbr <expr> %% expand(\'%:p:h\')')
+vim.cmd('cabbr <expr> %f expand(\'%:t\')')
 
 -- Common Mappings
 vim.api.nvim_set_keymap('', '<leader>cc', ':cclose <bar> lclose <cr>', {})
@@ -133,23 +143,14 @@ vim.opt.wildmode = { 'longest', 'list', 'full' }
 
 -- Local .vimrc or .nvimrc
 -- http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/
-vim.opt.exrc = true   -- enable per-directory .vimrc files
+vim.opt.exrc = true -- enable per-directory .vimrc files
 vim.opt.secure = true -- disable unsafe commands in local .vimrc files
-
--- Netrw
-vim.g.netrw_altv = 1
-vim.g.netrw_winsize = 30
-vim.g.netrw_browse_split = 0
-vim.g.netrw_preview = 1
-vim.g.netrw_list_hide = ''
-vim.g.netrw_liststyle = 0
 
 vim.cmd('filetype plugin indent on')
 
 -- Git Commit Formatting
-augroup('gitcommit', {
-    { 'FileType', 'gitcommit', 'setlocal', 'spell textwidth=72 formatoptions=cqt nonumber noruler' },
-})
+augroup('gitcommit',
+        { { 'FileType', 'gitcommit', 'setlocal', 'spell textwidth=72 formatoptions=cqt nonumber noruler' } })
 
 -- Grep
 vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
@@ -159,7 +160,7 @@ vim.api.nvim_set_keymap('n', '<C-p>', ':Files<cr>', {})
 
 -- TODO: Ensure Directory
 local function ensure_dir(file, buf)
-  if vim.fn.empty(vim.fn.getbufvar(file, '&buftype')) and not vim.regex('\\v^\\w+\\:\\/'):match_str(file) then
+  if vim.fn.empty(vim.fn.getbufvar(buf, '&buftype')) and not vim.regex('\\v^\\w+\\:\\/'):match_str(file) then
     local dir = vim.fn.fnamemodify(file, ':h')
     if not vim.fn.isdirectory(dir) then
       vim.fn.mkdir(dir, 'p')
@@ -168,13 +169,12 @@ local function ensure_dir(file, buf)
 end
 _G.ensure_dir = ensure_dir
 
-augroup('ensure_directory', {
-  { 'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))' },
-})
+augroup('ensure_directory',
+        { { 'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))' } })
 
 -- TreeSitter
 require('nvim-treesitter.configs').setup({
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = 'maintained', -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
   ignore_install = {}, -- List of parsers to ignore installing
   highlight = {
@@ -185,9 +185,7 @@ require('nvim-treesitter.configs').setup({
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-  indent = {
-    enable = true
-  },
+  indent = { enable = true },
 })
 
 -- Use an on_attach function to only map the following keys
@@ -200,7 +198,7 @@ local on_attach = function(_, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = { noremap = true, silent = true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -224,68 +222,62 @@ local on_attach = function(_, bufnr)
   vim.cmd('autocmd BufWritePre *.go lua lsp_imports_and_format(3000)')
   vim.cmd('autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 3000)')
   vim.cmd('autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 3000)')
+  vim.cmd('autocmd BufWritePre *.lua lua vim.lsp.buf.formatting_sync(nil, 3000)')
 end
 
+vim.lsp.set_log_level(vim.lsp.log_levels.ERROR)
+
+-- https://github.com/hrsh7th/nvim-cmp/
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- https://github.com/williamboman/nvim-lsp-installer
-local lsp_servers = { 'tsserver', 'efm', 'gopls', 'sumneko_lua', }
+local lsp_servers = { 'tsserver', 'efm', 'gopls', 'sumneko_lua' }
 for _, name in pairs(lsp_servers) do
   local function on_server_ready(server)
-    local opts = {
-      on_attach = on_attach,
-      flags = { debounce_text_changes = 150, },
-    }
+    local opts = { on_attach = on_attach, capabilities = capabilities, flags = { debounce_text_changes = 150 } }
 
-    if server.name == "sumneko_lua" then
+    if server.name == 'sumneko_lua' then
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
       opts.settings = {
         Lua = {
           diagnostics = {
             -- Get the language server to recognize the `vim` global
-            globals = {'vim'},
+            globals = { 'vim' },
           },
           workspace = {
             -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
+            library = vim.api.nvim_get_runtime_file('', true),
           },
           -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
-          },
+          telemetry = { enable = false },
         },
       }
     end
 
-    if server.name == "tsserver" then
+    if server.name == 'tsserver' then
       opts.on_attach = function(client, bufno)
         client.resolved_capabilities.document_formatting = false
         on_attach(client, bufno)
       end
     end
 
-    if server.name == "efm" then
-      local cfg = {
-        {
-          formatCommand = "prettierd ${INPUT}",
-          rootMarkers = {'package.json'},
-          formatStdin = true,
-        },
-        {
-          lintCommand = "eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}",
-          rootMarkers = {'package.json'},
+    if server.name == 'efm' then
+      local typescript_conf = {
+        { formatCommand = 'prettierd ${INPUT}', rootMarkers = { 'package.json' }, formatStdin = true }, {
+          lintCommand = 'eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}',
+          rootMarkers = { 'package.json' },
           lintIgnoreExitCode = true,
           lintStdin = true,
-          lintFormats = {'%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m'},
+          lintFormats = { '%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m' },
         },
       }
-      opts.rootdir = vim.loop.cwd
-      opts.filetypes = { 'typescript', 'javascript' }
+      local lua_conf = { { formatCommand = 'lua-format -i', formatStdin = true, rootMarkers = { 'init.lua' } } }
+      opts.root_dir = require('lspconfig/util').root_pattern('package.json', 'init.lua', '.git')
+      opts.filetypes = { 'typescript', 'javascript', 'lua' }
       opts.init_options = { documentFormatting = true }
       opts.settings = {
-        rootMarkers = { '.git' },
-        languages = {
-          typescript = cfg,
-          javascript = cfg,
-        },
+        rootMarkers = { '.git', 'init.lua' },
+        languages = { lua = lua_conf, typescript = typescript_conf, javascript = typescript_conf },
       }
     end
 
@@ -307,8 +299,8 @@ end
 -- LSP Formatting
 local function lsp_imports(timeout_ms)
   local params = vim.lsp.util.make_range_params()
-  params.context = {only = {"source.organizeImports"}}
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+  params.context = { only = { 'source.organizeImports' } }
+  local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
   for _, res in pairs(result or {}) do
     for _, r in pairs(res.result or {}) do
       if r.edit then
@@ -350,6 +342,7 @@ local required_tools = {
   ['prettierd'] = 'npm install -g @fsouza/prettierd',
   ['eslint_d'] = 'npm install -g eslint_d',
   ['golangci-lint-langserver'] = 'go get github.com/nametake/golangci-lint-langserver',
+  ['lua-format'] = 'luarocks install --server=https://luarocks.org/dev luaformatter',
 }
 for tool, instruction in pairs(required_tools) do
   if vim.fn.executable(tool) ~= 1 then
@@ -362,26 +355,26 @@ end
 -- to display a variable-length file path according
 -- the width of the current window
 local function file_path()
-    local tail = vim.fn.expand('%:p:t')
-    if tail == "" then
-        return "[no name]"
-    end
-    if vim.opt.buftype:get() ~= "" then
-        return tail
-    end
-    local head = vim.fn.substitute(vim.fn.expand('%:p:h'), vim.fn.expand('~'), '~', '') .. "/"
-    local x = vim.fn.winwidth(vim.fn.winnr()) - 50
-    local maxlen = vim.fn.float2nr(5 * vim.fn.sqrt(x < 0 and 0 or x))
-    if vim.fn.strlen(head) > maxlen then
-        head = vim.fn.strpart(head, vim.fn.strlen(head) - maxlen)
-        head = vim.fn.strpart(head, vim.fn.match(head, '/') + 1)
-    end
-    return head .. tail
+  local tail = vim.fn.expand('%:p:t')
+  if tail == '' then
+    return '[no name]'
+  end
+  if vim.opt.buftype:get() ~= '' then
+    return tail
+  end
+  local head = vim.fn.substitute(vim.fn.expand('%:p:h'), vim.fn.expand('~'), '~', '') .. '/'
+  local x = vim.fn.winwidth(vim.fn.winnr()) - 50
+  local maxlen = vim.fn.float2nr(5 * vim.fn.sqrt(x < 0 and 0 or x))
+  if vim.fn.strlen(head) > maxlen then
+    head = vim.fn.strpart(head, vim.fn.strlen(head) - maxlen)
+    head = vim.fn.strpart(head, vim.fn.match(head, '/') + 1)
+  end
+  return head .. tail
 end
 
 local function column_number()
   local vc = vim.fn.virtcol('.')
-  local ruler_width = vim.fn.max({vim.fn.strlen(vim.fn.line('$')), (vim.opt.numberwidth:get() - 1)})
+  local ruler_width = vim.fn.max({ vim.fn.strlen(vim.fn.line('$')), (vim.opt.numberwidth:get() - 1) })
   local column_width = vim.fn.strlen(vc)
   local padding = ruler_width - column_width
   local column = ''
@@ -397,27 +390,49 @@ local function column_number()
   return column
 end
 
-local function statusline ()
+local function statusline()
   local align_section = '%='
   local percentage_through_file = '%p%%'
   local filetype = vim.opt.filetype:get()
-  if filetype == "" then
-    filetype = "none"
+  if filetype == '' then
+    filetype = 'none'
   end
 
   return table.concat({
-    column_number(),
-    '%( %q%w%r%h%#StatusLineErr#%m%*%) ',
-    file_path(),
-    ' ',
-    filetype,
-    ' %( %r%m%w%)',
-    align_section,
-    ' ',
-    percentage_through_file,
+    column_number(), '%( %q%w%r%h%#StatusLineErr#%m%*%) ', file_path(), ' ', filetype, ' %( %r%m%w%)', align_section,
+    ' ', percentage_through_file,
   })
 end
 
 vim.opt.laststatus = 2
 _G.statusline = statusline
 vim.cmd('set statusline=%!v:lua.statusline()')
+
+-- Completion
+
+local cmp = require('cmp')
+
+cmp.setup({
+  experimental = { native_menu = true, ghost_text = true },
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
+  },
+  mapping = {
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({ i = cmp.mapping.abort(), c = cmp.mapping.close() }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({ { name = 'nvim_lsp' } }, { { name = 'buffer' } }),
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', { sources = { { name = 'buffer' } } })
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', { sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }) })
