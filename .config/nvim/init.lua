@@ -227,6 +227,17 @@ end
 
 vim.lsp.set_log_level(vim.lsp.log_levels.ERROR)
 
+-- Go Linting
+-- Needs to be called before other code requires lspconfig to avoid caching
+require('lspconfig.configs').golangcilsp = {
+  default_config = {
+    cmd = { 'golangci-lint-langserver' },
+    root_dir = require('lspconfig').util.root_pattern('.git', 'go.mod'),
+    init_options = { command = { 'golangci-lint', 'run', '--out-format', 'json' } },
+  },
+}
+require('lspconfig').golangcilsp.setup({ filetypes = { 'go' } })
+
 -- https://github.com/hrsh7th/nvim-cmp/
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -319,24 +330,6 @@ local function lsp_imports_and_format(timeout_ms)
 end
 _G.lsp_imports_and_format = lsp_imports_and_format
 
--- Go Linting
--- local lspconfig = require('lspconfig')
--- if not lspconfig.golangcilsp then
---   require('lspconfig/configs').golangcilsp = {
---     default_config = {
---       cmd = { 'golangci-lint-langserver' },
---       root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
---       init_options = {
---           command = { "golangci-lint", "run", "--out-format", "json" };
---       }
---     };
---   }
--- end
---
--- lspconfig.golangcilsp.setup({
---   filetypes = { "go" }
--- })
-
 -- Print warnings
 local required_tools = {
   ['prettierd'] = 'npm install -g @fsouza/prettierd',
@@ -390,6 +383,30 @@ local function column_number()
   return column
 end
 
+local function lspstatus()
+  if #vim.lsp.buf_get_clients() == 0 then
+    return ''
+  end
+
+  local total = 0
+  local result = {}
+  local levels = { E = 'Error', W = 'Warning', I = 'Information', H = 'Hint' }
+
+  for k, level in pairs(levels) do
+    local count = vim.lsp.diagnostic.get_count(0, level)
+    total = total + count
+    table.insert(result, { k, count })
+  end
+
+  if total == 0 then
+    return '[OK]'
+  end
+
+  result = vim.tbl_filter(function(value) return value[2] > 0 end, result)
+  local keys = vim.tbl_map(function(value) return table.concat(value, ':') end, result)
+  return '[' .. table.concat(keys, ', ') .. ']'
+end
+
 local function statusline()
   local align_section = '%='
   local percentage_through_file = '%p%%'
@@ -400,7 +417,7 @@ local function statusline()
 
   return table.concat({
     column_number(), '%( %q%w%r%h%#StatusLineErr#%m%*%) ', file_path(), ' ', filetype, ' %( %r%m%w%)', align_section,
-    ' ', percentage_through_file,
+    ' ', lspstatus(), ' ', percentage_through_file,
   })
 end
 
