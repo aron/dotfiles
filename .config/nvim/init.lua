@@ -108,11 +108,11 @@ vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
 -- FZF
 vim.api.nvim_set_keymap('n', '<C-p>', ':Files<cr>', {})
 
--- TODO: Ensure Directory
+-- Ensure Directory
 local function ensure_dir(file, buf)
   if vim.fn.empty(vim.fn.getbufvar(buf, '&buftype')) and not vim.regex('\\v^\\w+\\:\\/'):match_str(file) then
     local dir = vim.fn.fnamemodify(file, ':h')
-    if not vim.fn.isdirectory(dir) then vim.fn.mkdir(dir, 'p') end
+    if vim.fn.isdirectory(dir) == 0 then vim.fn.mkdir(dir, 'p') end
   end
 end
 _G.ensure_dir = ensure_dir
