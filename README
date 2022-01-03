@@ -42,25 +42,17 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
     $ sudo echo /usr/local/bin/zsh >> /etc/shells
     $ chsh -s /usr/local/bin/zsh
 
-# Create links for vim and neovim.
+# Install vim/neovim plugins:
 
-    $ ln -s $HOME/.vim/init.vim $HOME/.vimrc
+    $ nvim --headless -u NONE -c 'lua require("packages").bootstrap()'
 
-# Install plugpac.vim package manager
-
-    $ git clone https://github.com/k-takata/minpac.git \
-          ~/.config/nvim/pack/minpac/opt/minpac
-    $ curl -fLo ~/.config/nvim/autoload/plugpac.vim --create-dirs \
-          https://raw.githubusercontent.com/bennyyip/plugpac.vim/master/plugpac.vim
-    $ nvim -c "PackInstall"
-
-See: https://github.com/bennyyip/plugpac.vim
+See: https://github.com/savq/paq-nvim
 
 # Install SF Mono Font
 
     $ open /Applications/Utilities/Terminal.app/Contents/Resources/Fonts/*.otf
 
-# Hide this Readme:
+# Hide this README:
 
     $ chflags hidden ~/README
 
