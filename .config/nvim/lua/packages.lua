@@ -7,6 +7,7 @@ local vim_plugins = {
   {'axelf4/vim-strip-trailing-whitespace'},
   {'cloudhead/shady.vim'},
   {'editorconfig/editorconfig-vim'},
+  {'junegunn/fzf', run = function () vim.cmd('fzf#install()') end},
   {'junegunn/fzf.vim'},
   {'tomtom/tcomment_vim'},
   {'tpope/vim-eunuch'}, -- Unix file commands
@@ -15,6 +16,7 @@ local vim_plugins = {
   {'tpope/vim-ragtag'}, -- HTML tag mappings
   {'tpope/vim-repeat'}, -- Improved repeat to support surround.
   {'tpope/vim-rsi'}, -- Readline insertion
+  {'tpope/vim-rhubarb'}, -- Readline insertion
   {'tpope/vim-sleuth'}, -- Detect indentation
   {'tpope/vim-surround'},
   {'tpope/vim-unimpaired'}, -- Keyboard navigation mappings
@@ -35,7 +37,8 @@ local lua_plugins = {
   {'kdheepak/monochrome.nvim', opt = true},
   {'neovim/nvim-lspconfig', opt = true},
   {'nvim-treesitter/nvim-treesitter', opt = true, run = function() vim.cmd('TSUpdate') end},
-  {'williamboman/nvim-lsp-installer', opt = true},
+  {'williamboman/mason.nvim', opt = true},
+  {'williamboman/mason-lspconfig.nvim', opt = true},
 }
 
 vim.list_extend(all_plugins, vim_plugins)
