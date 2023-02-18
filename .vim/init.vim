@@ -110,9 +110,14 @@ set sidescrolloff=5
 " Disable swap files
 set dir=~/.vim/swap
 set noswapfile
-set undodir=~/.vim/undo
-set undofile
 set hidden
+set undofile
+set undodir=~/.vim/vimundo
+
+" Neovim 0.5 changed the undo format…
+if has('nvim-0.5')
+  set undodir=~/.vim/undo
+end
 
 " Remap Leader
 let mapleader = "\<Space>"
