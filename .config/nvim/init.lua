@@ -120,59 +120,79 @@ _G.ensure_dir = ensure_dir
 
 augroup('ensure_directory', { { 'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))' } })
 
--- TreeSitter
--- require('nvim-treesitter.configs').setup({
---   ensure_installed = 'all', -- one of "all", "maintained" (parsers with maintainers), or a list of languages
---   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
---   ignore_install = {}, -- List of parsers to ignore installing
---   highlight = {
---     enable = true,
---     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
---     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
---     -- Using this option may slow down your editor, and you may see some duplicate highlights.
---     -- Instead of true it can also be a list of languages
---     additional_vim_regex_highlighting = false,
---   },
---   indent = {enable = true},
--- })
+-- TreeSitter: https://github.com/nvim-treesitter/nvim-treesitter
+require('nvim-treesitter.configs').setup({
+  ensure_installed = 'all', -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  ignore_install = {}, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    -- additional_vim_regex_highlighting = false,
+  },
+  indent = { enable = true },
+})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
   -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap = true, silent = true }
-
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  -- https://github.com/neovim/nvim-lspconfig
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+  vim.keymap.set('n', '<space>q', vim.diagnostic.setqflist, bufopts)
 
   -- Setup format on save.
-  if client.server_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.cmd('autocmd BufWritePre <buffer> lua lsp_imports_and_format()')
   end
+
+  -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
+  vim.api.nvim_create_autocmd("CursorHold", {
+    buffer = bufnr,
+    callback = function()
+      local options = {
+        focusable = false,
+        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+        border = 'rounded',
+        source = 'always',
+        prefix = ' ',
+        scope = 'cursor',
+      }
+      vim.diagnostic.open_float(nil, options)
+    end,
+  })
 end
+
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = false,
+})
 
 vim.lsp.set_log_level(vim.lsp.log_levels.ERROR)
 
@@ -191,16 +211,17 @@ require('lspconfig').golangcilsp.setup({ filetypes = { 'go' } })
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'tsserver', 'efm', 'gopls', 'sumneko_lua' } })
+require("mason-lspconfig").setup({ ensure_installed = { 'tsserver', 'efm', 'gopls', 'lua_ls' } })
 
 -- https://github.com/williamboman/nvim-lsp-installer
 local function on_server_ready(server_name)
   local opts = { on_attach = on_attach, capabilities = capabilities, flags = { debounce_text_changes = 150 } }
 
-  if server_name == 'sumneko_lua' then
+  if server_name == 'lua_ls' then
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
     opts.settings = {
       Lua = {
+        runtime = { version = 'LuaJIT' },
         diagnostics = {
           -- Get the language server to recognize the `vim` global
           globals = { 'vim' },
@@ -208,24 +229,13 @@ local function on_server_ready(server_name)
         workspace = {
           -- Make the server aware of Neovim runtime files
           library = vim.api.nvim_get_runtime_file('', true),
+          -- Disable "luaassert" message
+          checkThirdParty = false,
         },
         -- Do not send telemetry data containing a randomized but unique identifier
         telemetry = { enable = false },
       },
     }
-  end
-
-  if server_name == 'tsserver' then
-    local function organize_imports()
-      local params = { command = '_typescript.organizeImports', arguments = { vim.api.nvim_buf_get_name(0) }, title = '' }
-      vim.lsp.buf.execute_command(params)
-    end
-
-    opts.on_attach = function(client, bufno)
-      client.server_capabilities.document_formatting = false
-      on_attach(client, bufno)
-    end
-    opts.commands = { OrganizeTSImports = { organize_imports, description = 'Organize Imports' } }
   end
 
   if server_name == 'efm' then
@@ -258,27 +268,40 @@ end
 -- https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/mason-lspconfig.txt
 require("mason-lspconfig").setup_handlers {
   on_server_ready, -- default handler
+
+  ["tsserver"] = function()
+    local opts = { on_attach = on_attach, capabilities = capabilities, flags = { debounce_text_changes = 150 } }
+
+    require('typescript').setup({
+      disable_commands = false, -- prevent the plugin from creating Vim commands
+      debug = false, -- enable debug logging for commands
+      go_to_source_definition = {
+        fallback = true, -- fall back to standard LSP definition on failure
+      },
+      server = opts, -- pass options to lspconfig's setup method,
+    })
+  end,
 }
 
+local function has_tsclient(bufnr)
+  for _, client in pairs(vim.lsp.get_active_clients({ bufnr })) do if client.name == "tsserver" then return true; end end
+  return false
+end
+
 -- LSP Formatting
-local function lsp_imports(timeout_ms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = { only = { 'source.organizeImports' } }
-  local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, timeout_ms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit)
-      elseif r.command then
-        vim.lsp.buf.execute_command(r)
-      end
-    end
+local function lsp_imports()
+  if has_tsclient(vim.api.nvim_get_current_buf()) then
+    local function onerror() print("ERROR: Unable to run organizeImports or addMissingImports") end
+
+    local actions = require("typescript").actions
+    xpcall(actions.organizeImports, onerror, { sync = true })
+    xpcall(actions.addMissingImports, onerror, { sync = true })
   end
 end
 
 local function lsp_imports_and_format(timeout_ms)
   timeout_ms = timeout_ms or 1000
-  lsp_imports(timeout_ms)
+  lsp_imports()
   vim.lsp.buf.format({ async = false, timeout_ms = timeout_ms })
 end
 
@@ -338,12 +361,8 @@ local function lspstatus()
 
   local total = 0
   local result = {}
-  local levels = {
-    E = vim.diagnostic.severity.ERROR,
-    W = vim.diagnostic.severity.WARN,
-    I = vim.diagnostic.severity.INFO,
-    H = vim.diagnostic.severity.HINT,
-  }
+  local s = vim.diagnostic.severity
+  local levels = { E = s.ERROR, W = s.WARN, I = s.INFO, H = s.HINT }
 
   for k, level in pairs(levels) do
     local count = #vim.diagnostic.get(0, { severity = level })
@@ -387,29 +406,47 @@ vim.cmd('set statusline=%!v:lua.statusline()')
 
 local cmp = require('cmp')
 
--- cmp.setup({
---   experimental = {ghost_text = true},
---   snippet = {
---     -- REQUIRED - you must specify a snippet engine
---     expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
---   },
---   mapping = {
---     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
---     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
---     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), {'i', 'c'}),
---     ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
---     ['<C-e>'] = cmp.mapping({i = cmp.mapping.abort(), c = cmp.mapping.close()}),
---     ['<CR>'] = cmp.mapping.confirm({select = true}),
---
---     ['<Tab>'] = cmp.mapping.confirm({select = true}),
---   },
---   sources = cmp.config.sources({{name = 'nvim_lsp'}}, {{name = 'buffer'}}),
---   -- view = {entries = "native"},
--- })
+cmp.setup({
+  experimental = { ghost_text = true },
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
+  },
+  completion = { keyword_length = 3 },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs( -4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources({
+    {
+      name = 'nvim_lsp',
+      entry_filter = function(entry, _)
+        return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
+      end,
+    },
+  }),
+  -- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#disabling-completion-in-certain-contexts-such-as-comments
+  enabled = function()
+    -- disable completion in comments
+    local context = require 'cmp.config.context'
+    -- keep command mode completion enabled when cursor is in a comment
+    if vim.api.nvim_get_mode().mode == 'c' then
+      return true
+    else
+      return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+    end
+  end,
+  -- view = {entries = "native"},
+})
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
--- cmp.setup.cmdline('/', {sources = {{name = 'buffer'}}})
+-- cmp.setup.cmdline('/', { sources = { { name = 'buffer' } } })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline(':', { sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }) })
 
--- cmp.setup.cmdline(':', {sources = cmp.config.sources({{name = 'path'}}, {{name = 'cmdline'}})})
+require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
