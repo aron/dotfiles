@@ -1,0 +1,17 @@
+theme = "github_dark_high_contrast"
+
+[editor]
+cursorline = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.lsp]
+display-inlay-hints = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "all"
