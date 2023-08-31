@@ -7,7 +7,7 @@ local function augroup(name, autocmds)
 end
 
 -- Plugins
-require('packages').bootstrap()
+xpcall(require('packages').bootstrap, function() require('paq').install() end)
 
 -- Color Scheme
 vim.cmd('silent! colorscheme monochrome')
@@ -21,17 +21,17 @@ vim.opt.updatetime = 300
 vim.opt.mouse = 'a'
 
 augroup('color_scheme', {
-  { 'InsertEnter', '*', 'hi StatusLine cterm=bold ctermbg=None ctermfg=white' },
-  { 'InsertLeave', '*', 'hi StatusLine cterm=bold ctermbg=None ctermfg=black' },
+  {'InsertEnter', '*', 'hi StatusLine cterm=bold ctermbg=None ctermfg=white'},
+  {'InsertLeave', '*', 'hi StatusLine cterm=bold ctermbg=None ctermfg=black'},
 })
 
 -- Display trailing and whitespace characters
 vim.opt.list = true
-vim.opt.listchars = { tab = '▸ ', trail = '·', eol = '¬' }
+vim.opt.listchars = {tab = '▸ ', trail = '·', eol = '¬'}
 
 -- Columns
 vim.opt.textwidth = 79
-vim.opt.colorcolumn = { 120 }
+vim.opt.colorcolumn = {120}
 vim.opt.formatoptions = 'cqj'
 vim.opt.scrolloff = 3
 vim.opt.sidescrolloff = 5
@@ -48,7 +48,7 @@ vim.opt.hidden = true
 vim.g.mapleader = ' '
 
 -- Allow backspacing over everything
-vim.opt.backspace = { 'indent', 'eol', 'start' }
+vim.opt.backspace = {'indent', 'eol', 'start'}
 
 -- Whitespace
 vim.opt.wrap = false
@@ -70,7 +70,7 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.api.nvim_set_keymap('n', '<leader><space>', ':nohlsearch<cr>', {})
 
-augroup('plugins', { { 'InsertEnter', '*', 'setlocal', 'nohlsearch' }, { 'InsertLeave', '*', 'setlocal', 'hlsearch' } })
+augroup('plugins', {{'InsertEnter', '*', 'setlocal', 'nohlsearch'}, {'InsertLeave', '*', 'setlocal', 'hlsearch'}})
 
 -- Expand %% to the current directory
 vim.cmd('cabbr <expr> %% expand(\'%:p:h\')')
@@ -90,7 +90,7 @@ vim.api.nvim_set_keymap('', '<leader>d', '"*d', {})
 
 -- Menu
 vim.opt.completeopt = 'menu'
-vim.opt.wildmode = { 'longest', 'list', 'full' }
+vim.opt.wildmode = {'longest', 'list', 'full'}
 
 -- Local .vimrc or .nvimrc
 -- http://damien.lespiau.name/blog/2009/03/18/per-project-vimrc/
@@ -100,7 +100,7 @@ vim.opt.secure = true -- disable unsafe commands in local .vimrc files
 vim.cmd('filetype plugin indent on')
 
 -- Git Commit Formatting
-augroup('gitcommit', { { 'FileType', 'gitcommit', 'setlocal', 'spell textwidth=72 formatoptions=cqt nonumber noruler' } })
+augroup('gitcommit', {{'FileType', 'gitcommit', 'setlocal', 'spell textwidth=72 formatoptions=cqt nonumber noruler'}})
 
 -- Grep
 vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
@@ -118,7 +118,7 @@ end
 
 _G.ensure_dir = ensure_dir
 
-augroup('ensure_directory', { { 'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))' } })
+augroup('ensure_directory', {{'BufWritePre', '*', ':lua ensure_dir(vim.fn.expand("<afile>"), vim.fn.expand("<abuf>"))'}})
 
 -- TreeSitter: https://github.com/nvim-treesitter/nvim-treesitter
 require('nvim-treesitter.configs').setup({
@@ -133,7 +133,7 @@ require('nvim-treesitter.configs').setup({
     -- Instead of true it can also be a list of languages
     -- additional_vim_regex_highlighting = false,
   },
-  indent = { enable = true },
+  indent = {enable = true},
 })
 
 -- Use an on_attach function to only map the following keys
@@ -145,7 +145,7 @@ local on_attach = function(client, bufnr)
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   -- https://github.com/neovim/nvim-lspconfig
-  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  local bufopts = {noremap = true, silent = true, buffer = bufnr}
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -158,7 +158,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format {async = true} end, bufopts)
   vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
@@ -175,7 +175,7 @@ local on_attach = function(client, bufnr)
     callback = function()
       local options = {
         focusable = false,
-        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+        close_events = {"BufLeave", "CursorMoved", "InsertEnter", "FocusLost"},
         border = 'rounded',
         source = 'always',
         prefix = ' ',
@@ -200,31 +200,31 @@ vim.lsp.set_log_level(vim.lsp.log_levels.ERROR)
 -- Needs to be called before other code requires lspconfig to avoid caching
 require('lspconfig.configs').golangcilsp = {
   default_config = {
-    cmd = { 'golangci-lint-langserver' },
+    cmd = {'golangci-lint-langserver'},
     root_dir = require('lspconfig').util.root_pattern('.git', 'go.mod'),
-    init_options = { command = { 'golangci-lint', 'run', '--out-format', 'json' } },
+    init_options = {command = {'golangci-lint', 'run', '--out-format', 'json'}},
   },
 }
-require('lspconfig').golangcilsp.setup({ filetypes = { 'go' } })
+require('lspconfig').golangcilsp.setup({filetypes = {'go'}})
 
 -- https://github.com/hrsh7th/nvim-cmp/
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'tsserver', 'efm', 'gopls', 'lua_ls' } })
+require("mason-lspconfig").setup({ensure_installed = {'tsserver', 'efm', 'gopls', 'lua_ls'}})
 
 -- https://github.com/williamboman/nvim-lsp-installer
 local function on_server_ready(server_name)
-  local opts = { on_attach = on_attach, capabilities = capabilities, flags = { debounce_text_changes = 150 } }
+  local opts = {on_attach = on_attach, capabilities = capabilities, flags = {debounce_text_changes = 150}}
 
   if server_name == 'lua_ls' then
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
     opts.settings = {
       Lua = {
-        runtime = { version = 'LuaJIT' },
+        runtime = {version = 'LuaJIT'},
         diagnostics = {
           -- Get the language server to recognize the `vim` global
-          globals = { 'vim' },
+          globals = {'vim'},
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
@@ -233,30 +233,30 @@ local function on_server_ready(server_name)
           checkThirdParty = false,
         },
         -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = { enable = false },
+        telemetry = {enable = false},
       },
     }
   end
 
   if server_name == 'efm' then
     local typescript_conf = {
-      { formatCommand = 'prettierd ${INPUT}', rootMarkers = { 'package.json' }, formatStdin = true },
+      {formatCommand = 'prettierd ${INPUT}', rootMarkers = {'package.json'}, formatStdin = true},
       {
         lintCommand = 'eslint_d -f visualstudio --stdin --stdin-filename ${INPUT}',
-        rootMarkers = { 'package.json' },
+        rootMarkers = {'package.json'},
         lintIgnoreExitCode = true,
         lintStdin = true,
-        lintFormats = { '%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m' },
+        lintFormats = {'%f(%l,%c): %tarning %m', '%f(%l,%c): %rror %m'},
       },
     }
-    local lua_conf = { { formatCommand = 'lua-format -i', formatStdin = true, rootMarkers = { 'init.lua' } } }
+    local lua_conf = {{formatCommand = 'lua-format -i', formatStdin = true, rootMarkers = {'init.lua'}}}
     opts.root_dir = require('lspconfig/util').root_pattern('package.json', 'init.lua', '.git')
-    opts.filetypes = { 'typescript', 'javascript', 'lua' }
-    opts.init_options = { documentFormatting = true }
+    opts.filetypes = {'typescript', 'javascript', 'lua'}
+    opts.init_options = {documentFormatting = true}
     opts.single_file_support = true
     opts.settings = {
-      rootMarkers = { '.git', 'init.lua' },
-      languages = { lua = lua_conf, typescript = typescript_conf, javascript = typescript_conf },
+      rootMarkers = {'.git', 'init.lua'},
+      languages = {lua = lua_conf, typescript = typescript_conf, javascript = typescript_conf},
     }
   end
 
@@ -270,7 +270,7 @@ require("mason-lspconfig").setup_handlers {
   on_server_ready, -- default handler
 
   ["tsserver"] = function()
-    local opts = { on_attach = on_attach, capabilities = capabilities, flags = { debounce_text_changes = 150 } }
+    local opts = {on_attach = on_attach, capabilities = capabilities, flags = {debounce_text_changes = 150}}
 
     require('typescript').setup({
       disable_commands = false, -- prevent the plugin from creating Vim commands
@@ -284,7 +284,7 @@ require("mason-lspconfig").setup_handlers {
 }
 
 local function has_tsclient(bufnr)
-  for _, client in pairs(vim.lsp.get_active_clients({ bufnr })) do if client.name == "tsserver" then return true; end end
+  for _, client in pairs(vim.lsp.get_active_clients({bufnr})) do if client.name == "tsserver" then return true; end end
   return false
 end
 
@@ -294,15 +294,15 @@ local function lsp_imports()
     local function onerror() print("ERROR: Unable to run organizeImports or addMissingImports") end
 
     local actions = require("typescript").actions
-    xpcall(actions.organizeImports, onerror, { sync = true })
-    xpcall(actions.addMissingImports, onerror, { sync = true })
+    xpcall(actions.organizeImports, onerror, {sync = true})
+    xpcall(actions.addMissingImports, onerror, {sync = true})
   end
 end
 
 local function lsp_imports_and_format(timeout_ms)
   timeout_ms = timeout_ms or 1000
   lsp_imports()
-  vim.lsp.buf.format({ async = false, timeout_ms = timeout_ms })
+  vim.lsp.buf.format({async = false, timeout_ms = timeout_ms})
 end
 
 _G.lsp_imports_and_format = lsp_imports_and_format
@@ -340,7 +340,7 @@ end
 
 local function column_number()
   local vc = vim.fn.virtcol('.')
-  local ruler_width = vim.fn.max({ vim.fn.strlen(vim.fn.line('$')), (vim.opt.numberwidth:get() - 1) })
+  local ruler_width = vim.fn.max({vim.fn.strlen(vim.fn.line('$')), (vim.opt.numberwidth:get() - 1)})
   local column_width = vim.fn.strlen(vc)
   local padding = ruler_width - column_width
   local column = ''
@@ -362,12 +362,12 @@ local function lspstatus()
   local total = 0
   local result = {}
   local s = vim.diagnostic.severity
-  local levels = { E = s.ERROR, W = s.WARN, I = s.INFO, H = s.HINT }
+  local levels = {E = s.ERROR, W = s.WARN, I = s.INFO, H = s.HINT}
 
   for k, level in pairs(levels) do
-    local count = #vim.diagnostic.get(0, { severity = level })
+    local count = #vim.diagnostic.get(0, {severity = level})
     total = total + count
-    table.insert(result, { k, count })
+    table.insert(result, {k, count})
   end
 
   if total == 0 then return '[OK]' end
@@ -405,30 +405,40 @@ vim.cmd('set statusline=%!v:lua.statusline()')
 -- Completion
 
 local cmp = require('cmp')
+local cmp_buffer = require('cmp_buffer')
 
 cmp.setup({
-  experimental = { ghost_text = true },
+  experimental = {ghost_text = true},
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args) vim.fn['vsnip#anonymous'](args.body) end,
   },
-  completion = { keyword_length = 3 },
+  completion = {keyword_length = 1},
   mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs( -4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({select = true}), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<Tab>'] = cmp.mapping.confirm({select = true}),
   }),
   sources = cmp.config.sources({
     {
       name = 'nvim_lsp',
+      max_item_count = 15,
       entry_filter = function(entry, _)
         return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
       end,
     },
   }),
+  sorting = {
+    comparators = {
+      function(...) return cmp_buffer:compare_locality(...) end,
+      cmp.config.compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+      cmp.config.compare.offset,
+    },
+
+  },
   -- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#disabling-completion-in-certain-contexts-such-as-comments
   enabled = function()
     -- disable completion in comments
@@ -440,7 +450,7 @@ cmp.setup({
       return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
     end
   end,
-  -- view = {entries = "native"},
+  view = {entries = "native"},
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
@@ -449,4 +459,5 @@ cmp.setup({
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 -- cmp.setup.cmdline(':', { sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }) })
 
-require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
+require('nvim-lightbulb').setup({autocmd = {enabled = true}})
+
