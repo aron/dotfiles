@@ -8,6 +8,7 @@ export PATH=$(brew --prefix)/opt/python/libexec/bin:$PATH
 export PATH=/usr/local/apache2/bin:$PATH
 export PATH=/usr/local/share/python:$PATH
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
+export PATH="$HOME/.docker/bin:$PATH"
 
 export PATH=$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PATH
 export PATH=$HOME/.homebrew/bin:$HOME/.homebrew/sbin:$PATH
