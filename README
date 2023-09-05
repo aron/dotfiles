@@ -6,6 +6,11 @@ See: http://sursolid.com/managing-home-dotfiles-with-git-and-github
 Installing
 ----------
 
+# Install XCode Tools & Rosetta (on Silicone Mac)
+
+    $ xcode-select --install
+    $ softwareupdate --install-rosetta
+
 # Install Homebrew:
 
 http://mxcl.github.io/homebrew/
