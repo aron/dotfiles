@@ -1,0 +1,72 @@
+[scrolling]
+  # How many lines of scrollback to keep,
+  # '0' will disable scrolling.
+  history=50000
+
+[font]
+normal = { family = "DM Mono", style = "Regular" }
+size = 14
+
+# amberwood: https://github.com/helix-editor/helix/blob/master/runtime/themes/amberwood.toml
+[colors]
+cursor = { text = "CellBackground", cursor = "#e5c890" }
+
+[colors.primary]
+background = "#0F1014"
+foreground = "#c9c7cd"
+
+# green = "#90b99f"
+# bright_green = "#9dc6ac"
+# yellow = "#e5c890"
+# blue = "#aca1cf"
+# bright_blue = "#b9aeda"
+# magenta = "#e29eca"
+# cyan = "#ea83a5"
+# bright_cyan = "#f591b2"
+# white = "#c1c0d4"
+# bright_white = "#cac9dd"
+# gray01 = "#1b1b1d"
+# gray02 = "#2a2a2d"
+# gray03 = "#3e3e43"
+# gray04 = "#57575f"
+# gray06 = "#9998a8"
+# gray07 = "#c1c0d4"
+# red="#e78284"
+
+[colors.normal]
+black = "#9998a8"
+red = "#e78284"
+green = "#90b99f"
+yellow = "#e5c890"
+blue = "#aca1cf"
+magenta = "#e29eca"
+cyan = "#ea83a5"
+white = "#c1c0d4"
+
+[colors.bright]
+black = "#9998a8"
+#red = "#e78284"
+green = "#9dc6ac"
+#yellow = "#e5c890"
+blue = "#b9aeda"
+#magenta = "#e29eca"
+cyan = "#f591b2"
+white = "#cac9dd"
+
+
+[window]
+padding = { x = 4, y = 4 }
+decorations = "Full"
+resize_increments = true
+option_as_alt = "Both"
+
+[keyboard]
+bindings = [
+    { key = "Left",  mods = "Alt", chars = "\u001BB" },
+    { key = "Right", mods = "Alt", chars = "\u001BF" },
+    { key = "Left",  mods = "Option", chars = "\u001BB" },
+    { key = "Right", mods = "Option", chars = "\u001BF" },
+    { key = "Left",  mods = "Control", chars = "\u001BB" },
+    { key = "Right", mods = "Control", chars = "\u001BF" },
+    { key = "Enter",  mods = "Command", action = "ToggleSimpleFullscreen" },
+]
