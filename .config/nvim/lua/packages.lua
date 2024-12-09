@@ -10,23 +10,24 @@ local vim_plugins = {
   { 'junegunn/fzf',                        run = function() vim.cmd('fzf#install()') end },
   { 'junegunn/fzf.vim' },
   { 'tomtom/tcomment_vim' },
-  { 'tpope/vim-eunuch' }, -- Unix file commands
-  { 'tpope/vim-fugitive' }, -- Git commands
-  { 'tpope/vim-git' }, -- Git syntax
-  { 'tpope/vim-ragtag' }, -- HTML tag mappings
-  { 'tpope/vim-repeat' }, -- Improved repeat to support surround.
-  { 'tpope/vim-rsi' }, -- Readline insertion
-  { 'tpope/vim-rhubarb' }, -- Readline insertion
-  { 'tpope/vim-sleuth' }, -- Detect indentation
+  { 'tpope/vim-eunuch' },     -- Unix file commands
+  { 'tpope/vim-fugitive' },   -- Git commands
+  { 'tpope/vim-git' },        -- Git syntax
+  { 'tpope/vim-ragtag' },     -- HTML tag mappings
+  { 'tpope/vim-repeat' },     -- Improved repeat to support surround.
+  { 'tpope/vim-rsi' },        -- Readline insertion
+  { 'tpope/vim-rhubarb' },    -- Readline insertion
+  { 'tpope/vim-sleuth' },     -- Detect indentation
   { 'tpope/vim-surround' },
   { 'tpope/vim-unimpaired' }, -- Keyboard navigation mappings
-  { 'tpope/vim-vinegar' }, -- Netrw
-  { 'vim-scripts/ag.vim' }, -- Better than grep
+  { 'tpope/vim-vinegar' },    -- Netrw
+  { 'vim-scripts/ag.vim' },   -- Better than grep
 }
 
 -- Lua Plugins
 local lua_plugins = {
   { 'savq/paq-nvim',                      opt = true },
+  { 'github/copilot.vim',                 opt = true },
   { 'hrsh7th/cmp-buffer',                 opt = true },
   { 'hrsh7th/cmp-cmdline',                opt = true },
   { 'hrsh7th/cmp-nvim-lsp',               opt = true },
