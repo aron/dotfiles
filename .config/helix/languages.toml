@@ -1,3 +1,63 @@
+[language-server]
+biome = { command = "biome", args = ["lsp-proxy"] }
+
+[language-server.typos]
+# typos-lsp must be on your PATH, or otherwise change this to an absolute path to typos-lsp
+command = "typos-lsp"
+# Logging level of the language server. Defaults to error.
+# Run with helix -v to output LSP logs to the editor log (:log-open)
+environment = {"RUST_LOG" = "error"}
+# Custom config. Used together with a config file found in the workspace or its parents,
+# taking precedence for settings declared in both. Equivalent to the typos `--config` cli argument.
+config.config = "~/code/typos-lsp/crates/typos-lsp/tests/typos.toml"
+# How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+# Defaults to Warning.
+config.diagnosticSeverity = "Warning"
+
+[language-server.ltex-ls]
+args = ["--log-file=/dev/null"]
+
+[language-server.ltex-ls.config]
+ltex.enabled = ["html", "latex", "markdown", "org", "restructuredtext", "python", "javascript", "go", "javascriptreact", "typescript", "typescriptreact"]
+ltex.disabledRules = { "en-US" = ["PROFANITY"], "en-GB" = ["PROFANITY"] }
+ltex.dictionary = { "en-US" = ["builtin"], "en-GB" = ["builtin"] }
+ltex.completionEnabled = true
+ltex.diagnosticSeverity = "hint"
+ltex.ltex-ls.logLevel = "severe"
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+config = {}
+environment = {}
+
+[language-server.ruff]
+command = "ruff-lsp"
+args = []
+environment = {}
+config = { settings = { run = "onSave" } }
+
+[language-server.black]
+command = "python-lsp-black"
+args = ["--stdio"]
+config = { provideFormatter = true, settings = { args = [] } }
+environment = {}
+
+[language-server.golangci-lint]
+command = "golangci-lint-langserver"
+args = []
+config = { command = ["/Users/Aron/.bin/language-servers/golangci-lint", "run", "--out-format", "json", "--issues-exit-code=1"] }
+environment = {}
+
+[language-server.copilot]
+command = "copilot"
+args = ["--stdio"]
+
+[language-server.harper-ls]
+command = "harper-ls"
+args = ["--stdio"]
+config = { "harper-ls" = { "linters" = { "matcher" = false } } }
+
 [[language]]
 name = "python"
 scope = "source.python"
@@ -6,16 +66,15 @@ file-types = ["py","pyi","py3","pyw","ptl",".pythonstartup",".pythonrc","SConstr
 shebangs = ["python"]
 roots = ["setup.py", "setup.cfg", "pyproject.toml"]
 comment-token = "#"
-language-servers = ["pyright"]
+language-servers = ["pyright", "ruff", "harper-ls"]
 indent = { tab-width = 4, unit = "    " }
-formatter = {command = "black", args = ["-",  "--quiet",]}
+formatter = {command = "ruff", args = ["format", "-"]}
 auto-format = true
 
-[language-server.pyright]
-command = "pyright-langserver"
-args = ["--stdio"]
-config = {}
-environment = {}
+[[language]]
+name = "markdown"
+file-types = ["markdown","md","mdx"]
+
 
 # will get "Async jobs timed out" errors if this empty config is not added
 # config = {} ## TODO: broke in HEAD version of helix
@@ -28,8 +87,14 @@ environment = {}
 # name = "json"
 # formatter = { command = 'prettier', args = ["--parser", "json"] }
 
-# [[language]]
-# name = "css"
+[[language]]
+name = "html"
+language-servers = [ "vscode-html-language-server", "tailwindcss-ls" ]
+
+[[language]]
+name = "css"
+language-servers = [ "vscode-css-language-server", "tailwindcss-ls" ]
+
 # formatter = { command = 'prettier', args = ["--parser", "css"] }
 
 [[language]]
@@ -54,4 +119,24 @@ auto-format = true
 
 [[language]]
 name = "go"
-formatter = { command = "go", args = ["run", "golang.org/x/tools/cmd/goimports"] }
+language-servers = ["gopls", "golangci-lint", "harper-ls"]
+formatter = { command = "/Users/Aron/.bin/language-servers/goimports" }
+
+[[language]]
+name = "jinja"
+file-types = ["html"]
+language-servers = ["harper-ls", "tailwindcss-ls"]
+formatter = { command = 'js-beautify', args = ["--quiet", "--type=html", "--templating=django", "-"] }
+auto-format = true
+
+[[language]]
+name = "markdown"
+text-width = 100
+soft-wrap.enable = true
+soft-wrap.wrap-at-text-width = true
+rulers = [100]
+language-servers = ["harper-ls"]
+
+[[language]]
+name = "git-commit"
+language-servers = ["harper-ls"]
