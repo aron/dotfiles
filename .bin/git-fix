@@ -3,7 +3,11 @@
 cd $(git rev-parse --show-toplevel)
 CONFLICTS=$(git diff --name-only --diff-filter=U)
 if [[ "$CONFLICTS" != "" ]]; then
-  ${EDITOR:-vim} -p $CONFLICTS
+  if [[ "$EDITOR" == 'hx' ]]; then
+    hx "$CONFLICTS"
+  else
+    "$EDITOR" -p "$CONFLICTS"
+  fi
 else
   echo "No conflicts to fix..."
 fi
