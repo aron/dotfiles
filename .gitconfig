@@ -1,16 +1,35 @@
 [user]
   name=Aron Carroll
-  email=self@aroncarroll.com
+  email=code@aroncarroll.com
+
+[init]
+	defaultBranch = main
+
+[pull]
+  ff = only
 
 [branch]
   autosetupmerge=true
+  sort=-committerdate
 
 [push]
 	default = current
+	autoSetupRemote = true
+
+[diff]
+  algorithm=histogram
+
+[rebase]
+  autosquash = true
+  autostash=true
+
+[fetch]
+  prune=true
+  prunetags=true
 
 [alias]
   co=checkout
-  cb=checkout -b
+  cb=switch -c
   cl=checkout @{-1}
   cc=checkout-clean
   br=branch
@@ -25,6 +44,7 @@
   dt=difftool
   dl=branch -D @{-1}
   re=rebase
+  rl=rebase -i @{-1}
   logb=log -10 --pretty=oneline --decorate
   log=log -10 --pretty=oneline
   lg=log --pretty=format:'%C(yellow)%h%Creset %s %C(bold black)(%cr by %C(magenta bold)%aN%C(bold black))%Creset' -10 --abbrev-commit
@@ -40,18 +60,31 @@
   ml=merge @{-1} --ff-only
   mlnf=merge @{-1} --no-ff
   tagg=tag -n1
+  fixup="commit --fixup"
 
 [core]
   # editor=open -eWn                                          # TextEdit
   # editor=mate --name 'Git Commit Message' -w -l1          # TextMate 2
   # editor=mate -w -l1                                      # TextMate
   # editor=vim -f +1 -c '"start! | au VimLeave * maca hide: | A"' # MacVim
-  editor=vim -f +1 -c start!
+  # editor=vim -f +1 -c start!
+  # editor=zed --wait
+  editor=hx
   autocrlf=input
   excludesfile=~/.gitignore
 
+[include]
+  path = "~/.gitconfig.local"
+
+[commit]
+  verbose=true
+
+[rerere]
+  enabled=true
+
 [merge]
   tool=mvim
+  conflictstyle=zdiff3
 
 [mergetool "mvim"]
   cmd=mvim -d -g $LOCAL $MERGED $REMOTE
@@ -65,6 +98,7 @@
 
 [diff]
   tool=Kaleidoscope
+  colorMoved=default
 
 [mergetool "Kaleidoscope"]
   cmd=ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" \"$REMOTE\"
@@ -97,10 +131,10 @@
   untracked=cyan
 
 [mailmap]
-  file=~/.mailmap
+  file=~/.mailmap.local
 
 [help]
-  autocorrect=-1
+  autocorrect=prompt
 
 [gist] # https://github.com/defunkt/gist
   private=yes
@@ -109,10 +143,3 @@
 [github]
   user=aron
   password=!security 2>&1 >/dev/null find-generic-password -gs github.password | ruby -e 'print $1 if STDIN.gets =~ /^password: \\\"(.*)\\\"$/'
-[mergetool "Kaleidoscope"]
-  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-  trustExitCode = true
-[pull]
-	rebase = true
-[init]
-	defaultBranch = main

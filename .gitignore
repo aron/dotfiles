@@ -3,3 +3,7 @@
 .DS_Store
 .vimrc
 .dropbox
+.helix
+.zed
+.envrc
+.direnv
