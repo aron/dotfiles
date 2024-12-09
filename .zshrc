@@ -28,9 +28,12 @@ setopt INC_APPEND_HISTORY
 setopt HIST_REDUCE_BLANKS
 
 # Prevent zsh conflicting with git commands
-alias git="noglob git"
-alias wget="noglob wget"
 alias curl="noglob curl"
+alias gh="noglob gh"
+# alias git="noglob git"
+alias hx='PATH="~/.bin/language-servers:$PATH" hx'
+alias lg="lazygit"
+alias wget="noglob wget"
 
 # Source files (the order matters).
 source "$HOME/.zsh/terminal.zsh"
@@ -90,10 +93,6 @@ function should-check-for-changes() {
   return 0
 }
 
-precmd() {
-  vcs_info
-}
-
 gitbranch() {
   branch="$(git rev-parse --abbrev-ref HEAD 2&> /dev/null)"
   if [[ "$branch" != "" ]]; then
@@ -102,12 +101,42 @@ gitbranch() {
   echo ""
 }
 
-# PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
-PROMPT='%~ $(gitbranch)%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
+# Useful when working on massive git repositories;
+PROMPT='%~ ${vcs_info_msg_0_}%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
+# PROMPT='%~ $(gitbranch)%(?.%{$fg_bold[yellow]%}.%{$fg_bold[red]%})%%%{$reset_color%} '
 RPROMPT=""
 
 if [ "$SSH_CONNECTION" != "" ]; then
   PROMPT='%{$fg[yellow]%}%m%{$reset_color%}'$PROMPT
 fi
 
+if [[ -f $(brew --prefix asdf)/libexec/asdf.sh ]]; then
+  source $(brew --prefix asdf)/libexec/asdf.sh
+fi
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Detect if 'gh' command exists
+if type gh &> /dev/null; then
+  eval "$(gh completion --shell zsh)"
+fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/Aron/.bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/Aron/.bin/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/Aron/.bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/Aron/.bin/google-cloud-sdk/completion.zsh.inc'; fi
+
+_zsh_cli_fg() { fg; }
+zle -N _zsh_cli_fg
+bindkey '^Z' _zsh_cli_fg
+
+eval "$(direnv hook zsh)"
+source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+DISABLE_AUTO_TITLE="true"
+
+precmd() {
+  vcs_info
+  echo -ne "\e]0;${PWD##*/}\a"
+}
