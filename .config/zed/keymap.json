@@ -1,0 +1,95 @@
+[
+    {
+        "context": "!menu && Editor && (vim_mode != insert)",
+        "bindings": {
+            "shift-space": "workspace::ToggleZoom",
+            "ctrl-t": "terminal_panel::ToggleFocus",
+            "ctrl-w w": "workspace::ActivateNextPane"
+        }
+    },
+    {
+        "context": "Editor && (vim_mode == normal || vim_mode == visual) && vim_operator == none && !VimWaiting",
+        "bindings": {
+            "space f": "file_finder::Toggle",
+            "space b": "tab_switcher::Toggle",
+            "space s": "outline::Toggle",
+            "space S": "project_symbols::Toggle",
+            "space d": "diagnostics::Deploy",
+            "space a": "editor::ToggleCodeActions",
+            "space /": "project_search::ToggleFocus",
+            "space c": "pane::CloseActiveItem",
+            "space C": "pane::CloseAllItems",
+            "space ?": "command_palette::Toggle",
+            "space w w": "pane::SplitRight",
+            "space w W": "pane::SplitDown",
+            "space w c": "pane::CloseActiveItem",
+            "space w o": "pane::CloseInactiveItems",
+            "space `": "terminal_panel::ToggleFocus"
+        }
+    },
+    {
+        "context": "Editor && (vim_mode == normal || vim_mode == visual) && vim_operator == none && !VimWaiting",
+        "bindings": {
+            "p": [
+                "vim::Paste",
+                {
+                    "preserveClipboard": true
+                }
+            ]
+        }
+    },
+    {
+        "context": "Editor && (vim_mode == normal || vim_mode == visual) && vim_operator == none && !VimWaiting",
+        "bindings": {
+            "shift-u": "editor::Redo",
+            "g g": "vim::GoToLine",
+            "g f": "zed::OpenZedUrl",
+            "g d": "editor::GoToDefinition",
+            "g D": "editor::GoToDefinitionSplit",
+            "g y": "editor::GoToTypeDefinition",
+            "g Y": "editor::GoToTypeDefinitionSplit",
+            "g r": "editor::FindAllReferences",
+            "g i": "editor::GoToImplementation",
+            "g I": "editor::GoToImplementationSplit",
+            "g t": "editor::ScrollCursorTop",
+            "g c": "editor::ScrollCursorCenter",
+            "g b": "editor::ScrollCursorBottom",
+            "g a": "pane::AlternateFile",
+            "g m": "pane::ActivateLastItem",
+            "g n": "pane::ActivateNextItem",
+            "g p": "pane::ActivatePrevItem",
+            "[ d": "editor::GoToPrevDiagnostic",
+            "] d": "editor::GoToDiagnostic",
+            "[ n": "editor::GoToPrevHunk",
+            "] n": "editor::GoToHunk",
+            "] space": "vim::InsertLineAbove",
+            "[ space": "vim::InsertLineBelow",
+            "space k": "editor::Hover",
+            "space f": "file_finder::Toggle",
+            "space b": "tab_switcher::Toggle",
+            "space s": "outline::Toggle",
+            "space S": "project_symbols::Toggle",
+            "space d": "diagnostics::Deploy",
+            "space a": "editor::ToggleCodeActions",
+            "space /": "project_search::ToggleFocus",
+            "space r": "editor::Rename",
+            "space c": "pane::CloseActiveItem",
+            "space C": "pane::CloseAllItems",
+            "space ?": "command_palette::Toggle",
+            "space =": "editor::Format",
+            "space x": "editor::SelectLargerSyntaxNode",
+            "space X": "editor::SelectSmallerSyntaxNode",
+            "space w w": "pane::SplitRight",
+            "space w W": "pane::SplitDown",
+            "space w c": "pane::CloseActiveItem",
+            "space w o": "pane::CloseInactiveItems",
+            "space `": "terminal_panel::ToggleFocus"
+        }
+    },
+    {
+        "context": "Editor && vim_mode == insert && !VimWaiting",
+        "bindings": {
+            "ctrl-w": "editor::DeleteToPreviousWordStart"
+        }
+    }
+]
