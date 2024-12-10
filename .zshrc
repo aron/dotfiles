@@ -116,9 +116,8 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Detect if 'gh' command exists
-if type gh &> /dev/null; then
-  eval "$(gh completion --shell zsh)"
+if (( $+commands[gh] )); then
+  eval "$(command gh completion --shell zsh)"
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -131,8 +130,13 @@ _zsh_cli_fg() { fg; }
 zle -N _zsh_cli_fg
 bindkey '^Z' _zsh_cli_fg
 
-eval "$(direnv hook zsh)"
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+if (( $+commands[direnv] )); then
+  eval "$(direnv hook zsh)"
+
+  if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+  fi
+fi
 
 DISABLE_AUTO_TITLE="true"
 
